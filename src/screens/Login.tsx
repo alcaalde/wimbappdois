@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -15,7 +15,31 @@ type Props = StackScreenProps<RootStackParamList, 'login'>;
 const Stack = createStackNavigator();
 
 export default function Login({ navigation }:Props){
-  const [text, setText] = useState('');
+  
+    const [error, setError] = useState('');
+  
+    // Expressão regular para validar formato de e-mail
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
+    const handleSubmit = () => {
+      if (!email) {
+        setError('O e-mail não pode estar vazio.');
+      } else if (!emailRegex.test(email)) {
+        setError('Por favor, insira um e-mail válido.');
+      } else {
+        
+        if(senha=='') {
+          setError('A senha não pode estar vazia.');
+        }
+        else {
+          setError('');
+          navigation.navigate('home')
+        }
+      }
+      
+    };
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
   const [text2, setText2] = useState('');
@@ -27,20 +51,23 @@ export default function Login({ navigation }:Props){
 
        <TextInput style={styles.campo}
         placeholder={isFocused ? '' : '  Email'}
-        value={text}
-        onChangeText={setText}
+        value={email}
+        onChangeText={setEmail}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}/>
 
         <TextInput style={styles.campo}
         placeholder={isFocused2 ? '' : '  Senha'}
-        value={text2}
-        onChangeText={setText2}
+        value={senha}
+        onChangeText={setSenha}
         onFocus={() => setIsFocused2(true)}
-        onBlur={() => setIsFocused2(false)}/>
+        onBlur={() => setIsFocused2(false)}
+        secureTextEntry={true} // Senha mascarada
+        autoCapitalize="none"/>
+         {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
 
         <TouchableOpacity style={styles.entrar}
-        onPress={() => navigation.navigate('home')}>
+        onPress={handleSubmit}>
         <Text style={styles.textoenviar}> Entrar </Text>
         </TouchableOpacity>
 
@@ -58,7 +85,8 @@ export default function Login({ navigation }:Props){
         Continuar sem login </Text>
     </View>
   );
-}
+  }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -146,3 +174,4 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   }
 });
+

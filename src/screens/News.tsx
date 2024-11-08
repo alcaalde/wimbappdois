@@ -13,6 +13,7 @@ export default function News() {
       <Text style={styles.titulo}> WIMB </Text>
          <Text style={styles.subtitulo}> WHERE IS MY BUS </Text>
       </View>
+      
       <Image
         source={require('../../assets/dutraObras.jpg')}
         style={styles.imagePrincipal}
@@ -32,6 +33,7 @@ export default function News() {
         
         </View>
     </View>
+    <View style={styles.container2}>
     <View style={styles.conteudo}>
     <Image
         source={require('../../assets/dutraObras.jpg')}
@@ -43,7 +45,7 @@ export default function News() {
      <Text style={styles.subtituloNoticia}> Via será interditada na altura da Hélio Smidt</Text>
      </View>
     </View>
-
+</View>
     <View style={styles.conteudo}>
     <Image
         source={require('../../assets/dutraObras.jpg')}
@@ -55,7 +57,7 @@ export default function News() {
      <Text style={styles.subtituloNoticia}> Via será interditada na altura da Hélio Smidt</Text>
      </View>
      </View>
-
+     
     </View>
   )
 }
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
   width: '100%',
   height: '100%',
   flexDirection: 'row',
+  position: 'absolute', 
  },
 
  image:{
@@ -165,5 +168,8 @@ textoWrapper: {
   // Garante que o texto não ultrapasse os limites da tela
     overflow: 'hidden',
     justifyContent: 'flex-start'
+},
+container2: {
+  flexDirection: 'column',
 },
 });

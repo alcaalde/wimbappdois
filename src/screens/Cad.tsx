@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
+import { TextInputMask } from 'react-native-masked-text';
 
 type RootStackParamList = {
   login: undefined;
@@ -13,19 +14,57 @@ type RootStackParamList = {
 
 type Props = StackScreenProps<RootStackParamList, 'cadastro'>;
 
+
+//nome emai tel senha
 export default function Cad({ navigation }:Props){
-  const [text, setText] = useState('');
+  const [nome, setNome] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
-  const [text2, setText2] = useState('');
+  const [email, setEmail] = useState('');
   const [isFocused2, setIsFocused2] = useState(false);
 
-  const [text3, setText3] = useState('');
+  const [telefone, setTelefone] = useState('');
   const [isFocused3, setIsFocused3] = useState(false);
   
-  const [text4, setText4] = useState('');
+  const [senha, setSenha] = useState('');
   const [isFocused4, setIsFocused4] = useState(false);
-
+  
+  const [error, setError] = useState('');
+  
+    // Expressão regular para validar formato de e-mail
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
+    const handleSubmit = () => {
+      if (nome==''){
+        setError('O campo nome não pode estar vazio.');
+      }
+      else{
+      if (!email) {
+        setError('O e-mail não pode estar vazio.');
+      } else if (!emailRegex.test(email)) {
+        setError('Por favor, insira um e-mail válido.');
+      } else {
+        if(telefone==''){
+          setError('O campo Telefone não pode estar vazio.');
+        }
+        else{
+        if(senha=='') {
+          setError('A senha não pode estar vazia.');
+        }
+        else{
+          if(senha.length < 6) {
+            setError('A senha deve ter no mínimo 6 dígitos.');
+        }
+        else {
+          setError('');
+          navigation.navigate('home')
+        }
+      }
+    }
+    }
+  }
+  };
+  
   return (
     <View style={styles.container}>
 
@@ -41,39 +80,49 @@ export default function Cad({ navigation }:Props){
 
         <TextInput style={styles.campo}
         placeholder={isFocused ? '' : 'Nome'}
-        value={text}
-        onChangeText={setText}
+        value={nome}
+        onChangeText={setNome}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}>
         </TextInput>
 
         <TextInput style={styles.campo} 
         placeholder={isFocused2 ? '' : 'Email'}
-        value={text2}
-        onChangeText={setText2}
+        value={email}
+        onChangeText={setEmail}
         onFocus={() => setIsFocused2(true)}
         onBlur={() => setIsFocused2(false)}>
         </TextInput>
 
-        <TextInput style={styles.campo}  
+        <TextInputMask
+        style={styles.campo}
+        type={'custom'}
+        options={{
+          mask: '(99) 99999-9999', // A máscara para telefone brasileiro
+        }}
         placeholder={isFocused3 ? '' : 'Telefone'}
-        value={text3}
-        onChangeText={setText3}
+        value={telefone}
+        onChangeText={setTelefone}
         onFocus={() => setIsFocused3(true)}
         onBlur={() => setIsFocused3(false)}>
-        </TextInput>
+        </TextInputMask>
 
         <TextInput style={styles.campo}
         placeholder={isFocused4 ? '' : 'Senha'}
-        value={text4}
-        onChangeText={setText4}
+        value={senha}
+        onChangeText={setSenha}
+        secureTextEntry={true} // Senha mascarada
+        autoCapitalize="none"
         onFocus={() => setIsFocused4(true)}
-        onBlur={() => setIsFocused4(false)}>
+        onBlur={() => setIsFocused4(false)}
+        >
+        
+          
         </TextInput>
         
-
+        {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
         <TouchableOpacity style={styles.cadastrar}
-        onPress={() => navigation.navigate('home')}>
+        onPress={handleSubmit}>
 
         <Text style={styles.textocadastrar}> Cadastrar </Text>
 
