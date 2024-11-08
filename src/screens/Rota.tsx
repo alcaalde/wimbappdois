@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { StyleSheet, View, Image, TextInput, TouchableOpacity, PermissionsAndroid } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import MapView, { Marker, Polyline } from 'react-native-maps';
@@ -37,7 +37,6 @@ export default function Mapa() {
         showsUserLocation={true}
         showsMyLocationButton
       >
-        
         <Marker
           coordinate={{ latitude: -23.454855496866678, longitude: -46.50189870636914 }}
           title="Ponto de ônibus 1" 
@@ -61,23 +60,5 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-  },
-  searchContainer: {
-    position: 'absolute',
-    top: 10,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    width: '90%',
-  },
-  input: {
-    flex: 1,
-    padding: 8,
-    fontSize: 16,
-  },
-  searchButton: {
-    padding: 8,
   },
 });
