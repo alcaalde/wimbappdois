@@ -1,0 +1,4 @@
+<Image
+        source={require('../../assets/dutraObras.jpg')}
+        style={styles.image}
+      />
