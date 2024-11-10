@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from '@expo/vector-icons';
 
-import Search from "../screens/Search";
 import Mapa from "../screens/Rota";
 import Profile from "../screens/Profile";
 import News from "../screens/News";
@@ -18,14 +17,6 @@ export default function TabRoutes(){
           tabBarActiveTintColor: 'black',
           tabBarInactiveTintColor: 'white',}}>
 
-            <Tab.Screen 
-            name="Search"
-            component={Search}
-            options={{
-                tabBarIcon: ({color, size}) => <Feather name="search" color={color} size={size}/>,
-                tabBarLabel: ' '
-            }}
-            />
             
             <Tab.Screen 
             name="mapa"

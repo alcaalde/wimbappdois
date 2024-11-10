@@ -2,9 +2,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import DrawerRoutes from './drawer.routes';
 import Cad from "../screens/Cad";
 import Login from "../screens/Login";
-import Search from "../screens/Search";
 import EsqueciSenha from "../screens/EsqueciSenha";
 import InfoOnibus from "../screens/infoOnibus";
+import Linha813 from "../screens/onibus813"
 
 type RootStackParamList = {
     login: undefined;
