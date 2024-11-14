@@ -6,11 +6,9 @@ import { Feather } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
 type RootStackParamList = {
-    login: undefined;
-    cadastro: undefined;
     home: undefined;
-    senha: undefined;
     infoOnibus: undefined;
+    linha813: undefined;
   };
 
   const Stack = createStackNavigator<RootStackParamList>();
@@ -33,6 +31,11 @@ export default function InfoOnibus({ navigation }:Props) {
           <View style={styles.horario}>
             <Text style={styles.horarioTexto}>12 minutos</Text>
           </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.cadastrar}
+        onPress={() => navigation.navigate('linha813')}>
+        <Text style={styles.textocadastrar}> Ver rota </Text>
       </TouchableOpacity>
       
       <View style={styles.conteudo}>
@@ -106,6 +109,26 @@ const styles = StyleSheet.create({
     marginTop: 5,
     letterSpacing: 8,
     marginBottom: 40
+  },
+
+  cadastrar: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    marginTop: 3,
+    padding: 12,
+    borderWidth: 0,
+    width: '90%',
+    backgroundColor:'#545454',
+    marginBottom: 10,
+    elevation: 5,
+    paddingVertical: 8
+  },
+
+  textocadastrar:{
+    fontSize: 10,
+    color: 'white',
+    fontWeight: '600'
   },
 
   conteudo: {

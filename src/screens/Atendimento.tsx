@@ -44,6 +44,9 @@ export default function Atendimento() {
   return (
 <View style={styles.container}>
 
+<Text style={styles.titulo}> WIMB </Text>
+<Text style={styles.subtitulo}> WHERE IS MY BUS </Text>
+
 <View style={styles.caixaTextos}>
       <Text style={styles.tituloPagina}>Entre em contato </Text>
       <Text style={styles.subtituloPagina}> 
@@ -99,6 +102,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  titulo: {
+    fontSize: 35,
+    textAlign: 'center',
+    marginTop: 40,
+    fontWeight: 'bold',
+    letterSpacing: 5,
+  },
+
+  subtitulo:{
+    fontSize: 10,
+    textAlign: 'center',
+    marginTop: 5,
+    letterSpacing: 8,
+    marginBottom: 40
+  },
+
   email: {
     backgroundColor: 'white',
     borderRadius: 20,
@@ -122,14 +141,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     height: '30%',
     textAlignVertical: 'top',
-    marginBottom: 40
+    marginBottom: 20
   },
 
   enviar: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    marginTop: 3,
     padding: 12,
     borderWidth: 0,
     width: '80%',
@@ -156,7 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight:'bold',
     marginBottom: 10,
-    marginTop: 50,
+    marginTop: 15,
   },
 
   subtituloPagina:{

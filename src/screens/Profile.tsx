@@ -9,6 +9,9 @@ export default function Profile() {
       <View>
       <Text style={styles.nome}>Fabiano Silva</Text>
       <Text style={styles.email}>fabiano_silva@gmail.com</Text>
+      <TouchableOpacity style={styles.botaoEditar}>
+        <Text style={styles.textoEditar}> Editar </Text>
+        </TouchableOpacity>
       </View>
       </View>
       <View style={styles.fav}>
@@ -79,6 +82,23 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     textDecorationLine: 'underline'
   }, 
+  botaoEditar: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    marginTop: 20,
+    padding: 12,
+    borderWidth: 0,
+    width: '100%',
+    backgroundColor:'#545454',
+    elevation: 5,
+    paddingVertical: 5,
+  },
+  textoEditar:{
+    fontSize: 9,
+    color: 'white',
+    fontWeight: '500'
+  },
   fav:{
     alignItems: 'flex-start',
     width: '80%',

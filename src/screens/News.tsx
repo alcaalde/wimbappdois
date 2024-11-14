@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { WebView } from 'react-native-webview';
@@ -9,10 +9,13 @@ export default function News() {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       {showWebView ? (
-        <WebView
-          source={{ uri: 'https://guarulhosweb.com.br/onibus-e-incendiado-na-entrada-do-jardim-fortaleza-em-guarulhos/' }}
-          style={{ height: 500 }}
-        />
+        <View style={{ flex: 1, width: '100%', height: 500 }}>
+          <Button title="Voltar" onPress={() => setShowWebView(false)} />
+          <WebView
+            source={{ uri: 'https://www.guarulhoshoje.com.br/2024/11/14/emtu-amplia-linha-que-liga-aruja-ao-aeroporto-de-guarulhos-com-viagens-aos-domingos-e-feriados/' }}
+            style={{ flex: 1 }}
+          />
+        </View>
       ) : (
         <>
           <View style={styles.head}>
@@ -22,7 +25,7 @@ export default function News() {
 
           <TouchableOpacity style={styles.imageContainer} onPress={() => setShowWebView(true)}>
             <Image
-              source={require('../../assets/dutraObras.jpg')}
+              source={{uri: 'https://www.guarulhoshoje.com.br/wp-content/uploads/2024/11/unnamed-768x384.jpg' }}
               style={styles.imagePrincipal}
             />
             <LinearGradient
@@ -30,8 +33,37 @@ export default function News() {
               style={styles.gradientPrincipal}
             />
             <View style={styles.textOverlay}>
-              <Text style={styles.tituloNoticiaPrincipal}>Ônibus é incendiado na entrada do Jardim Fortaleza em Guarulhos</Text>
-              <Text style={styles.subtituloNoticiaPrincipal}>Fonte: Redação Guarulhos Web     Data: 12 de novembro de 2024</Text>
+              <Text style={styles.tituloNoticiaPrincipal}>EMTU amplia linha que liga Arujá ao Aeroporto de Guarulhos com viagens aos domingos e feriados</Text>
+              <Text style={styles.subtituloNoticiaPrincipal}>Fonte: Redação Guarulhos Hoje     Data: 14 de novembro de 2024</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.imageContainer} onPress={() => setShowWebView(true)}>
+            <Image
+              source={{uri: 'https://guarulhostododia.com.br/wp-content/uploads/2024/11/transito-guarulhos-ayrton-senna-avenida-santos-dumont-bueno-drone.jpg' }}
+              style={styles.imagePrincipal}
+            />
+            <LinearGradient
+              colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
+              style={styles.gradientPrincipal}
+            />
+            <View style={styles.textOverlay}>
+              <Text style={styles.tituloNoticiaPrincipal}>Trânsito caótico em Guarulhos prejudica moradores em diferentes bairros</Text>
+              <Text style={styles.subtituloNoticiaPrincipal}>Fonte: Guarulhos Todo Dia     Data: 13 de novembro de 2024</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.imageContainer} onPress={() => setShowWebView(true)}>
+            <Image
+              source={{uri: 'https://p2.trrsf.com/image/fget/cf/774/0/images.terra.com/2013/11/28/01spacidentedutracaminhaocarrosonibusmortesbetomartinsfut.jpg' }}
+              style={styles.imagePrincipal}
+            />
+            <LinearGradient
+              colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
+              style={styles.gradientPrincipal}
+            />
+            <View style={styles.textOverlay}>
+              <Text style={styles.tituloNoticiaPrincipal}>Acidente com ônibus, caminhão e 2 carros mata 3 pessoas na Via Dutra</Text>
+              <Text style={styles.subtituloNoticiaPrincipal}>Fonte: Terra    Data: 13 de novembro de 2024</Text>
             </View>
           </TouchableOpacity>
         </>
@@ -68,7 +100,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: '100%',
     height: 200,
-    marginBottom: 20, // Espaçamento entre as imagens
+    marginBottom: 2, // Espaçamento entre as imagens
   },
   imagePrincipal: {
     width: '100%',
