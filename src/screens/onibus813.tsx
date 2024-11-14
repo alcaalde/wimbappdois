@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import MapView, { Marker, Polyline, LatLng } from 'react-native-maps';
 
 
 export default function Linha813() {
@@ -145,6 +145,28 @@ export default function Linha813() {
     { latitude: -23.461378376170114, longitude: -46.4976710899943},
     { latitude: -23.4621115933514, longitude: -46.497311673973556},
   ]);
+  
+const [routeCoordinates2, setRouteCoordinates2] = useState ([
+  { latitude: -23.41483510550068, longitude: -46.40433689023493},
+  { latitude: -23.415121733070464, longitude: -46.404282229107785},
+  { latitude: -23.41549793082238, longitude: -46.40432127276802},
+  { latitude:-23.415856420132567, longitude: -46.404499297311915},
+  { latitude: -23.41605845763395, longitude: -46.40464920163642},
+  { latitude: -23.41698882993575, longitude: -46.4058186447995},
+  { latitude: -23.41725957196801, longitude: -46.40597957734536},
+  { latitude: -23.417918422805194, longitude: -46.40604523063321},
+  { latitude: -23.418075944405473, longitude: -46.406286629444566},
+  { latitude: -23.418258078522197, longitude: -46.40680161358353},
+  { latitude: -23.418351606761608, longitude: -46.40724686028383},
+  { latitude: -23.419188435359274, longitude: -46.40713420750172},
+  { latitude: -23.421551216983808, longitude: -46.40695181727137},
+  { latitude: -23.42235356865979, longitude: -46.40651729940367},
+  { latitude: -23.42298855516791, longitude: -46.40648511288871},
+  { latitude: -23.42339218841393, longitude: -46.40665140985277},
+]);
+
+const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
+
 
   return (
     <View style={styles.container}>
@@ -156,12 +178,32 @@ export default function Linha813() {
           latitudeDelta: 0.19,
           longitudeDelta: 0.14,
         }}
+        onPress={() => setSelectedCoord(null)}
       >
          <Polyline
           coordinates={routeCoordinates}
           strokeColor="#000000"
-          strokeWidth={5} 
+          strokeWidth={4} 
         />
+
+      <Polyline
+          coordinates={routeCoordinates2}
+          strokeColor="#FF0000"
+          strokeWidth={5}
+          tappable={true}
+          onPress={(e) => {
+            setSelectedCoord(e.nativeEvent.coordinate ?? null);
+          }}
+      />
+{selectedCoord && (
+          <View style={[styles.popup, {
+            left: selectedCoord.longitude,
+            top: selectedCoord.latitude,
+          }]}
+          >
+            <Text style={styles.popupText}> Pesquisar rota </Text>
+          </View>
+        )}
       </MapView>
     </View>
   );
@@ -175,5 +217,19 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  popup: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    padding: 8,
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  popupText: {
+    color: 'black',
   },
 });
