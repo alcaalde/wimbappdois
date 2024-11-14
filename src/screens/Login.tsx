@@ -18,18 +18,17 @@ export default function Login({ navigation }:Props){
   
     const [error, setError] = useState('');
   
-    // Expressão regular para validar formato de e-mail
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   
     const handleSubmit = () => {
       if (!email) {
-        setError('O e-mail não pode estar vazio.');
+        setError('Preencha todos os campos.');
       } else if (!emailRegex.test(email)) {
         setError('Por favor, insira um e-mail válido.');
       } else {
         
         if(senha=='') {
-          setError('A senha não pode estar vazia.');
+          setError('Preencha todos os campos.');
         }
         else {
           setError('');
@@ -64,7 +63,8 @@ export default function Login({ navigation }:Props){
         onBlur={() => setIsFocused2(false)}
         secureTextEntry={true} // Senha mascarada
         autoCapitalize="none"/>
-         {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
+         {error ? 
+         <Text style={{ color: 'red' }}>{error}</Text> : null}
 
         <TouchableOpacity style={styles.entrar}
         onPress={handleSubmit}>

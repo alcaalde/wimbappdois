@@ -1,73 +1,52 @@
-import { StyleSheet, Text, TextInput, View, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StackScreenProps } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from 'react';
+import { WebView } from 'react-native-webview';
 
 export default function News() {
+  const [showWebView, setShowWebView] = useState(false);
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      {showWebView ? (
+        <WebView
+          source={{ uri: 'https://guarulhosweb.com.br/onibus-e-incendiado-na-entrada-do-jardim-fortaleza-em-guarulhos/' }}
+          style={{ height: 500 }}
+        />
+      ) : (
+        <>
+          <View style={styles.head}>
+            <Text style={styles.titulo}> WIMB </Text>
+            <Text style={styles.subtitulo}> WHERE IS MY BUS </Text>
+          </View>
 
-     <View style={styles.head}>
-      <Text style={styles.titulo}> WIMB </Text>
-         <Text style={styles.subtitulo}> WHERE IS MY BUS </Text>
-      </View>
-      
-      <Image
-        source={require('../../assets/dutraObras.jpg')}
-        style={styles.imagePrincipal}
-      />
-      
-      <LinearGradient
-        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
-        style={styles.gradientPrincipal}
-      />
-
-    <View style={styles.a}>
-        <View style={styles.barra}/>
-        <View style={styles.texto}>
-
-        <Text style={styles.tituloNoticiaPrincipal}> OBRAS NA DUTRA: </Text>
-        <Text style={styles.subtituloNoticiaPrincipal}> Via será interditada na altura da Hélio Smidt </Text>
-        
-        </View>
-    </View>
-    <View style={styles.container2}>
-    <View style={styles.conteudo}>
-    <Image
-        source={require('../../assets/dutraObras.jpg')}
-        style={styles.image}
-      />
-
-     <View style={styles.textoWrapper}>
-     <Text style={styles.tituloNoticia}>OBRAS NA DUTRA:</Text>
-     <Text style={styles.subtituloNoticia}> Via será interditada na altura da Hélio Smidt</Text>
-     </View>
-    </View>
-</View>
-    <View style={styles.conteudo}>
-    <Image
-        source={require('../../assets/dutraObras.jpg')}
-        style={styles.image}
-      />
-
-     <View style={styles.textoWrapper}>
-     <Text style={styles.tituloNoticia}>OBRAS NA DUTRA:</Text>
-     <Text style={styles.subtituloNoticia}> Via será interditada na altura da Hélio Smidt</Text>
-     </View>
-     </View>
-     
-    </View>
-  )
+          <TouchableOpacity style={styles.imageContainer} onPress={() => setShowWebView(true)}>
+            <Image
+              source={require('../../assets/dutraObras.jpg')}
+              style={styles.imagePrincipal}
+            />
+            <LinearGradient
+              colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
+              style={styles.gradientPrincipal}
+            />
+            <View style={styles.textOverlay}>
+              <Text style={styles.tituloNoticiaPrincipal}>Ônibus é incendiado na entrada do Jardim Fortaleza em Guarulhos</Text>
+              <Text style={styles.subtituloNoticiaPrincipal}>Fonte: Redação Guarulhos Web     Data: 12 de novembro de 2024</Text>
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
+    </ScrollView>
+  );
 }
 
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
+    flexGrow: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   head: {
     marginTop: 0,
@@ -79,97 +58,41 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 5,
   },
-
-  subtitulo:{
+  subtitulo: {
     fontSize: 10,
     textAlign: 'center',
     marginTop: 5,
     letterSpacing: 8,
-    marginBottom: 40
+    marginBottom: 40,
   },
-
+  imageContainer: {
+    width: '100%',
+    height: 200,
+    marginBottom: 20, // Espaçamento entre as imagens
+  },
   imagePrincipal: {
-    marginTop: 90,
-    width: '110%',
-    height: '30%',
-    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
   gradientPrincipal: {
-    marginTop: 90,
-    position: 'absolute', 
-    width: '110%',
-    height: '30%',
+    ...StyleSheet.absoluteFillObject, // Para cobrir toda a área da imagem
   },
-  a: {
-    marginLeft: 30,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    width: '100%', 
-    flexDirection: 'row',
-    marginTop: '30%',
-  }, 
-  barra:{
-    width: 4,
-    height: 40,
-    backgroundColor: '#EBCB4A',
-    marginTop: 8,
-    marginRight: 10
-  },
-  texto:{
-    flexDirection: 'column',
+  textOverlay: {
+    position: 'absolute', // Para sobrepor a imagem
+    bottom: 10, // Posição no rodapé da imagem
+    left: 10,
+    right: 10,
+    padding: 10,
   },
   tituloNoticiaPrincipal: {
-    color:'white',
+    color: 'white',
     fontWeight: '600',
-    fontSize: 25,
-    marginLeft: -4
+    fontSize: 20,
+    marginBottom: 5,
   },
-  subtituloNoticiaPrincipal:{
-    color:'white',
-    fontWeight: '400',
-    fontSize: 15,
-    marginTop: -5
- },
- conteudo:{
-  marginTop: 13,
-  width: '100%',
-  height: '100%',
-  flexDirection: 'row',
-  position: 'absolute', 
- },
-
- image:{
-    width: '30%',
-    height: '15%',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
- },
- 
-tituloNoticia: {
-  color:'black',
-  fontWeight: '600',
-  fontSize: 20,
-  marginLeft: '2%',
-  flexShrink: 1,
-},
-subtituloNoticia:{
-  color:'black',
-  fontWeight: '400',
-  fontSize: 12,
-  marginTop: -5,
-  flexShrink: 1, 
-   marginLeft: '2%',
-   maxWidth: '75%'
-},
-textoWrapper: {
-  flexDirection: 'column',
-  flexWrap: 'wrap', 
-  width: '90%', 
-  // Garante que o texto não ultrapasse os limites da tela
-    overflow: 'hidden',
-    justifyContent: 'flex-start'
-},
-container2: {
-  flexDirection: 'column',
-},
+  subtituloNoticiaPrincipal: {
+    color: 'white',
+    fontWeight: '200',
+    fontSize: 8,
+  },
 });

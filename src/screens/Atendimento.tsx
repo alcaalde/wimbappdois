@@ -3,28 +3,34 @@ import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
  
 export default function Atendimento() {
-  const [text, setText] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-  const [text2, setText2] = useState('');
-  const [isFocused2, setIsFocused2] = useState(false);
+  const [nome, setNome] = useState('');
+  const [isFocusedNome, setIsFocusedNome] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+  const [texto, setTexto] = useState('');
+  const [isFocusedTexto, setIsFocusedTexto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
  
   const handleSend = () => {
-    if (!text.trim()) return;
+    if (!nome.trim()) return;
  
     setLoading(true);
     setStatusMessage('');
  
     const templateParams = {
-      message: text,
+      nome: nome,
+      email: email,
+      texto: texto,
     };
  
     emailjs.send('service_t89eudc', 'template_xlmilk9', templateParams, '4b6D5sKby0Ibz6iB9')
       .then((response) => {
         console.log('SUCCESS!', response.status, response.text);
         setStatusMessage('Mensagem enviada com sucesso!');
-        setText('');
+        setNome('');
+        setEmail('');
+        setTexto('');
       })
       .catch((err) => {
         console.error('FAILED...', err);
@@ -37,23 +43,39 @@ export default function Atendimento() {
  
   return (
 <View style={styles.container}>
-<Text>Entre em contato com o suporte da Wimb via email</Text>
+
+<View style={styles.caixaTextos}>
+      <Text style={styles.tituloPagina}>Entre em contato </Text>
+      <Text style={styles.subtituloPagina}> 
+        Envie sua mensagem e receba o retorno em até 5 dias úteis.
+      </Text>
+      </View>
+
+      <TextInput
+        style={styles.email}
+        placeholder={isFocusedNome ? '' : '  Nome'}
+        value={nome}
+        onChangeText={setNome}
+        onFocus={() => setIsFocusedNome(true)}
+        onBlur={() => setIsFocusedNome(false)}
+      />
+
 <TextInput
         style={styles.email}
-        placeholder={isFocused ? '' : '  Digite seu email'}
-        value={text}
-        onChangeText={setText}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        placeholder={isFocusedEmail ? '' : '  Email'}
+        value={email}
+        onChangeText={setEmail}
+        onFocus={() => setIsFocusedEmail(true)}
+        onBlur={() => setIsFocusedEmail(false)}
       />
 
 <TextInput
         style={styles.mensagem}
-        placeholder={isFocused2 ? '' : '  Digite sua mensagem'}
-        value={text2}
-        onChangeText={setText2}
-        onFocus={() => setIsFocused2(true)}
-        onBlur={() => setIsFocused2(false)}
+        placeholder={isFocusedTexto ? '' : '  Digite sua mensagem'}
+        value={texto}
+        onChangeText={setTexto}
+        onFocus={() => setIsFocusedTexto(true)}
+        onBlur={() => setIsFocusedTexto(false)}
       />
 <TouchableOpacity style={styles.enviar} onPress={handleSend} disabled={loading}>
         {loading ? (
@@ -82,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     fontSize: 15,
     color: 'black',
-    margin: 20,
+    marginBottom: 10,
     padding: 12,
     width: '80%',
     elevation: 5,
@@ -98,7 +120,7 @@ const styles = StyleSheet.create({
     width: '80%',
     elevation: 5,
     paddingVertical: 10,
-    height: '50%',
+    height: '30%',
     textAlignVertical: 'top',
     marginBottom: 40
   },
@@ -123,5 +145,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
     color: 'green',
+  },
+  caixaTextos:{
+    alignItems:'flex-start',
+    justifyContent: 'flex-start',
+    width: '80%'
+  },
+
+  tituloPagina:{
+    fontSize: 20,
+    fontWeight:'bold',
+    marginBottom: 10,
+    marginTop: 50,
+  },
+
+  subtituloPagina:{
+    fontSize: 15,
+    fontWeight:'light',
+    marginBottom: 35
   },
 });

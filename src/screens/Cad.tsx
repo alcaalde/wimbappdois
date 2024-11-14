@@ -31,29 +31,38 @@ export default function Cad({ navigation }:Props){
   
   const [error, setError] = useState('');
   
-    // Expressão regular para validar formato de e-mail
+    
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const telefoneRegex = /^[0-9]{10,11}$/;
+    const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
   
     const handleSubmit = () => {
       if (nome==''){
-        setError('O campo nome não pode estar vazio.');
+        setError('Preencha todos os campos.');
       }
+      else if (!nomeRegex.test(nome)) {
+        setError('O nome não deve conter números ou caracteres especiais.');
+      } 
       else{
       if (!email) {
-        setError('O e-mail não pode estar vazio.');
+        setError('Preencha todos os campos.');
       } else if (!emailRegex.test(email)) {
         setError('Por favor, insira um e-mail válido.');
       } else {
         if(telefone==''){
-          setError('O campo Telefone não pode estar vazio.');
+          setError('Preencha todos os campos.');
+        }
+        else if (!telefoneRegex.test(telefone)) {
+          setError('Por favor, insira um número de telefone válido.');
         }
         else{
         if(senha=='') {
-          setError('A senha não pode estar vazia.');
+          setError('Preencha todos os campos.');
         }
         else{
-          if(senha.length < 6) {
-            setError('A senha deve ter no mínimo 6 dígitos.');
+          if(!senhaRegex.test(senha)) {
+            setError('Senha inválida.');
         }
         else {
           setError('');
@@ -116,6 +125,7 @@ export default function Cad({ navigation }:Props){
         onFocus={() => setIsFocused4(true)}
         onBlur={() => setIsFocused4(false)}
         >
+        <Text>A senha deve conter no mínimo 6 caracteres, incluindo letras e números</Text>
         
           
         </TextInput>
