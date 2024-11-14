@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import MapView, { Marker, Polyline, LatLng } from 'react-native-maps';
+import MapView, { Marker, Polyline, LatLng, Callout } from 'react-native-maps';
 
 
 export default function Linha813() {
@@ -196,13 +196,16 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
           }}
       />
 {selectedCoord && (
-          <View style={[styles.popup, {
-            left: selectedCoord.longitude,
-            top: selectedCoord.latitude,
-          }]}
-          >
-            <Text style={styles.popupText}> Pesquisar rota </Text>
-          </View>
+          <Marker coordinate={selectedCoord}
+          image={require(('../../assets/transito2.png'))}>
+            <Callout tooltip>
+              <View style={styles.calloutContainer}>
+                <View style={styles.calloutBubble}>
+                  <Text style={styles.calloutText}>Trânsito no trecho: 11km/h {'\n'} Atraso estimado: 13 minutos</Text>
+                </View>
+              </View>
+            </Callout>
+          </Marker>
         )}
       </MapView>
     </View>
@@ -218,18 +221,25 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  popup: {
-    position: 'absolute',
+  calloutContainer: {
+    alignItems: 'center',
+  },
+  calloutBubble: {
     backgroundColor: 'white',
-    padding: 8,
-    borderRadius: 5,
+    borderRadius: 10,
+    padding: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
-    shadowRadius: 2,
+    shadowRadius: 4,
     elevation: 5,
+    borderWidth: 2, 
+    borderColor: 'black', 
   },
-  popupText: {
-    color: 'black',
+  calloutText: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
