@@ -4,7 +4,7 @@ import Cad from "../screens/Cad";
 import Login from "../screens/Login";
 import EsqueciSenha from "../screens/EsqueciSenha";
 import InfoOnibus from "../screens/infoOnibus";
-import Linha813 from "../screens/onibus813"
+import HorarioTela from "../screens/horario"
 
 type RootStackParamList = {
     login: undefined;
@@ -12,6 +12,7 @@ type RootStackParamList = {
     home: undefined;
     senha: undefined;
     infoOnibus: undefined;
+    horario: undefined;
   };
   
   const Stack = createStackNavigator<RootStackParamList>();
@@ -40,6 +41,10 @@ export default function StackRoutes(){
                 <Stack.Screen
                     name="infoOnibus" 
                     component={InfoOnibus} 
+                />
+                 <Stack.Screen
+                    name="horario" 
+                    component={HorarioTela} 
                 />
 
                 
