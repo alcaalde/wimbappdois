@@ -1,10 +1,11 @@
 import React, { useState, useEffect, Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker, Polyline, LatLng, Callout } from 'react-native-maps';
-
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native'; 
 
 export default function Linha813() {
-
+  const navigation = useNavigation();
   
   const [routeCoordinates, setRouteCoordinates] = useState([
     { latitude: -23.384312181770227, longitude: -46.399131662317785 },
@@ -195,6 +196,264 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
             setSelectedCoord(e.nativeEvent.coordinate ?? null);
           }}
       />
+          <Marker  
+            coordinate={{ latitude: -23.384250368413262, longitude: -46.39907927654249 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rua Jovita de Quadros Góes 26"
+          />
+
+          <Marker  
+            coordinate={{ latitude: -23.382555375277256, longitude: -46.39957022124962 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rua Brinco de Princesa 906"
+          />
+            
+            <Marker  
+            coordinate={{ latitude: -23.38422431738303, longitude: -46.400067806860285 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Osvaldo Matias Góes, 88"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.385661297335947, longitude: -46.40065763785309 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Jovita de Quadros Góes, 510"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.383552604971136, longitude: -46.402139140529634 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Orlando Marquês, 164"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.384039506135164,  longitude: -46.40321150045056 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rua Orlando Marques 243"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.38621963246637, longitude: -46.40169232982112 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rua Rodolfo Turriano, 328"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.38600735308939, longitude: -46.39920605252148 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Gerânio, 2"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.394002399629628, longitude: -46.397703782425815 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Estrada Acacio Antonio Batista 1527"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.396846400751766, longitude: -46.398124039321615 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Estrada do Morro Grande"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.399276463976197, longitude: -46.39910956318804 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Estrada do Morro Grande"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.400977227754346, longitude: -46.400294383834876 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Estrada Acácio Antônio Batista 649"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.40200148018183, longitude: -46.40340176522688 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Estrada Acacio Antonio Batista 309"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.402319893008567, longitude: -46.40394015954879 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Estrada Acacio Antonio Batista 247"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.402928665693704, longitude: -46.4050807384734 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Estrada Acacio Antonio Batista 101"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.40423734668427, longitude: -46.40664338745621 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Paschoal Thomeu, 2502"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.405617907183586, longitude: -46.406259203090684 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Armando Bei, 1939"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.40609676290352, longitude: -46.404569591252866 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Armando Bei, 226-278"
+          />
+         
+         <Marker  
+            coordinate={{ latitude: -23.4065691202419, longitude:  -46.40283272929486 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Armando Bei, 436-496"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.407090008458876, longitude: -46.40108874573444 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Armando Bei, 579"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.409457544412856, longitude: -46.402012470052675 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. São Ludgéro, 58"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.411032563979788, longitude: -46.40336322450713 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Doze de Junho, 336"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.4130044776505, longitude: -46.40464396479226 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Doze de Junho, 55"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.414532125274086, longitude: -46.40452051410736 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Orlando Ramos, 455"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.416907521206745, longitude: -46.4057686121451 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Orlando Ramos, 746-808"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.41898001866601, longitude: -46.40717956632621 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Dr. Arthur Marcondes de Siqueira, 815"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.42063535362222, longitude: -46.40711183094698 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Avenida Doutor Artur Marcondes de Siqueira"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.423629335892215, longitude: -46.40711753641062 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Felício Antônio Alves, 2"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.424034064643607, longitude: -46.40812986772707 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Francisco Xavier Correia, 1535"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.42222905148769, longitude: -46.41384118439094 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. O1, 676"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.422179583417666, longitude: -46.41820073747161 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Lindú, 71"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.42440122677214, longitude: -46.41889377565839 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="100 R. Carlos Drumond de Andrade"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.432438548997226, longitude: -46.42038365920277 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rod. Pres. Dutra, 106"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.434472844497765, longitude: -46.42570645507899 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Fartura, 236-310"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.438772603512998, longitude: -46.43593895230933 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Carmela Dutra, 960-1032"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.440290387788146, longitude: -46.43955626536575 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rod. Pres. Dutra"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.44339001216647, longitude: -46.447023356266754 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rod. Pres. Dutra"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.446735948554338, longitude: -46.4548842103696 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rod. Pres. Dutra"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.449038626575742, longitude: -46.46010043753456}}
+            image={require(('../../assets/pontorota2.png'))}
+            title="R. Manoel Alonso Almendra, 402"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.45137475616074, longitude: -46.46569321246609 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rod. Pres. Dutra-Pista Lateral, 94"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.45802942995318, longitude: -46.4818498202383 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Rod. Pres. Dutra-Pista Lateral, 1574"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.458598522018633, longitude: -46.49518860990688 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Av. Monteiro Lobato, Alt. do 3555"
+          />
+
+<Marker  
+            coordinate={{ latitude: -23.461728546722558, longitude: -46.49725460501406 }}
+            image={require(('../../assets/pontorota2.png'))}
+            title="Terminal Metropolitano CECAP"
+          />
+
 {selectedCoord && (
           <Marker coordinate={selectedCoord}
           image={require(('../../assets/transito2.png'))}>
@@ -208,8 +467,18 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
           </Marker>
         )}
       </MapView>
+     
+
+     
+      <TouchableOpacity style={styles.buttonContainer}
+       onPress={() => navigation.navigate('horario')}>
+        <AntDesign name="clockcircleo" size={24} color="black" />
+        <Text style={styles.buttonText}>Horários</Text>
+      </TouchableOpacity>
     </View>
   );
+
+  
 }
 
 const styles = StyleSheet.create({
@@ -230,16 +499,36 @@ const styles = StyleSheet.create({
     padding: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.7,
     shadowRadius: 4,
-    elevation: 5,
-    borderWidth: 2, 
-    borderColor: 'black', 
+    elevation: 5, 
   },
   calloutText: {
     color: '#333',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    top: 20,
+    right: -40,
+    transform: [{ translateX: -50 }], // Centraliza o botão
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonText: {
+    marginLeft: 8,
+    fontSize: 18,
+    color: 'black',
+    fontWeight: 'bold',
   },
 });
