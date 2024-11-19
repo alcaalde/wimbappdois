@@ -4,6 +4,7 @@ import MapView, { Marker, Polyline, LatLng, Callout } from 'react-native-maps';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function Linha813() {
   const navigation = useNavigation();
@@ -517,6 +518,12 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
         <AntDesign name="clockcircleo" size={24} color="black" />
         <Text style={styles.buttonText}>Horários</Text>
       </TouchableOpacity>
+
+      
+      <TouchableOpacity style={styles.buttoncentralizar}
+       onPress={() => navigation.navigate('home')}>
+        <FontAwesome name="home" size={24} color="black" />
+      </TouchableOpacity>
     </View>
   );
 
@@ -553,7 +560,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    top: 40,
+    top: 50,
     right: -40,
     transform: [{ translateX: -50 }],
     flexDirection: 'row',
@@ -572,5 +579,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
+  },
+  buttoncentralizar: {
+    position: 'absolute',
+    top: 40,
+    left: 20, 
+    backgroundColor: '#FFFFFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
 });
