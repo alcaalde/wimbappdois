@@ -81,12 +81,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   head: {
-    marginTop: 0,
+    marginTop: 25,
   },
   titulo: {
     fontSize: 35,
     textAlign: 'center',
-    marginTop: 0,
+    marginTop: 25,
     fontWeight: 'bold',
     letterSpacing: 5,
   },

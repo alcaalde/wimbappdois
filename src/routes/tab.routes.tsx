@@ -4,7 +4,6 @@ import { Feather } from '@expo/vector-icons';
 import Mapa from "../screens/Rota";
 import Profile from "../screens/Profile";
 import News from "../screens/News";
-import Linha813 from "../screens/onibus813";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,15 +47,6 @@ export default function TabRoutes(){
             }}
             />
 
-            <Tab.Screen 
-            name="linhateste"
-            component={Linha813}
-            options={{
-                
-                tabBarIcon: ({color, size}) => <Feather name="user" color={color} size={size}/>,
-                tabBarLabel: ' '
-            }}
-            />
 
         </Tab.Navigator>
     )

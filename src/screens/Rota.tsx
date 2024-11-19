@@ -4,10 +4,12 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { useNavigation } from '@react-navigation/native'; 
 
 export default function Mapa() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const mapRef = useRef<MapView>(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -64,7 +66,8 @@ export default function Mapa() {
       <FontAwesome6 name="location-crosshairs" size={24} color="black" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.test}>
+      <TouchableOpacity style={styles.test}
+      onPress={() => navigation.navigate('telapesquisa')}>
       <FontAwesome5 name="search-location" size={25} color="black" style={styles.icon} />
       <Text style={styles.text}> Pesquisar rota </Text>
       </TouchableOpacity>
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
   },
   buttoncentralizar: {
     position: 'absolute',
-    top: 20,
+    top: 40,
     right: 20, 
     backgroundColor: '#FFFFFF',
     borderRadius: 30,

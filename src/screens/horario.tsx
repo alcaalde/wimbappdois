@@ -12,7 +12,7 @@ const HorarioTela = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Horário Linha 813</Text>
+        <Text style={styles.headerText}>Horário Linha 813 {'\n'}Ponto de ônibus: Terminal CECAP</Text>
       </View>
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         {horarios.map((horario, index) => (

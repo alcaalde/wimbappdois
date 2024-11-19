@@ -2,11 +2,46 @@ import React, { useState, useEffect, Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker, Polyline, LatLng, Callout } from 'react-native-maps';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
+import * as Location from 'expo-location';
 
 export default function Linha813() {
   const navigation = useNavigation();
-  
+
+  const [location, setLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  });
+
+  const getUserLocation = async () => {
+    try {
+      const { coords } = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
+      setLocation((prev) => ({
+        ...prev,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      }));
+    } catch (error) {
+      console.error("Error getting location:", error);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      await Location.requestForegroundPermissionsAsync();
+      getUserLocation();
+
+      // Atualiza a cada 30 segundos
+      const intervalId = setInterval(() => {
+        getUserLocation();
+      }, 30000);
+
+      return () => clearInterval(intervalId);
+    })();
+  }, []);
+
   const [routeCoordinates, setRouteCoordinates] = useState([
     { latitude: -23.384312181770227, longitude: -46.399131662317785 },
     { latitude: -23.384070915227518, longitude: -46.399067289299445,},
@@ -196,6 +231,13 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
             setSelectedCoord(e.nativeEvent.coordinate ?? null);
           }}
       />
+
+<Marker  
+            coordinate={location}
+            image={require(('../../assets/onibusirl.png'))}
+          />
+
+
           <Marker  
             coordinate={{ latitude: -23.384250368413262, longitude: -46.39907927654249 }}
             image={require(('../../assets/pontorota2.png'))}
@@ -511,9 +553,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    top: 20,
+    top: 40,
     right: -40,
-    transform: [{ translateX: -50 }], // Centraliza o botão
+    transform: [{ translateX: -50 }],
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
