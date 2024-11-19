@@ -7,15 +7,13 @@ import { Feather } from '@expo/vector-icons';
 
 type RootStackParamList = {
   login: undefined;
-  cadastro: undefined;
-  home: undefined;
   senha: undefined;
 };
 
 type Props = StackScreenProps<RootStackParamList, 'senha'>;
 const Stack = createStackNavigator();
 
-export default function Login({ navigation }:Props){
+export default function EsqueciSenha({ navigation }:Props){
   const [text, setText] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
