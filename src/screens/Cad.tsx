@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Constants from 'expo-constants';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TextInputMask } from 'react-native-masked-text';
+import { auth, db } from './config/firebaseConfig';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { ref, set } from 'firebase/database';
 
 type RootStackParamList = {
   login: undefined;
@@ -14,129 +16,110 @@ type RootStackParamList = {
 
 type Props = StackScreenProps<RootStackParamList, 'cadastro'>;
 
-
-//nome emai tel senha
-export default function Cad({ navigation }:Props){
+export default function Cad({ navigation }: Props) {
   const [nome, setNome] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-
   const [email, setEmail] = useState('');
-  const [isFocused2, setIsFocused2] = useState(false);
-
   const [telefone, setTelefone] = useState('');
-  const [isFocused3, setIsFocused3] = useState(false);
-  
   const [senha, setSenha] = useState('');
-  const [isFocused4, setIsFocused4] = useState(false);
-  
   const [error, setError] = useState('');
-  
-    
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const telefoneRegex = /^[0-9]{10,11}$/;
-    const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
-    const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
-  
-    const handleSubmit = () => {
-      if (nome==''){
-        setError('Preencha todos os campos.');
-      }
-      else if (!nomeRegex.test(nome)) {
-        setError('O nome não deve conter números ou caracteres especiais.');
-      } 
-      else{
-      if (!email) {
-        setError('Preencha todos os campos.');
-      } else if (!emailRegex.test(email)) {
-        setError('Por favor, insira um e-mail válido.');
-      } else {
-        if(telefone==''){
-          setError('Preencha todos os campos.');
-        }
-        else if (!telefoneRegex.test(telefone)) {
-          setError('Por favor, insira um número de telefone válido.');
-        }
-        else{
-        if(senha=='') {
-          setError('Preencha todos os campos.');
-        }
-        else{
-          if(!senhaRegex.test(senha)) {
-            setError('Senha inválida.');
-        }
-        else {
-          setError('');
-          navigation.navigate('home')
-        }
-      }
+
+  // Expressões regulares para validação
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const telefoneRegex = /^[0-9]{10,11}$/;
+  const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
+  // Função de envio do formulário
+  const handleSubmit = async () => {
+    if (nome === '' || email === '' || telefone === '' || senha === '') {
+      setError('Preencha todos os campos.');
+      return;
     }
+
+    if (!emailRegex.test(email)) {
+      setError('Por favor, insira um e-mail válido.');
+      return;
     }
-  }
+
+    if (!telefoneRegex.test(telefone.replace(/\D/g, ''))) {
+      setError('Por favor, insira um número de telefone válido.');
+      return;
+    }
+
+    if (!senhaRegex.test(senha)) {
+      setError('Senha inválida. Deve conter ao menos 6 caracteres, incluindo letras e números.');
+      return;
+    }
+
+    try {
+      // Cadastrar usuário no Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+      const userId = userCredential.user.uid;
+
+      // Salvar dados no Realtime Database
+      await set(ref(db, `users/${userId}`), {
+        nome,
+        email,
+        telefone: telefone.replace(/\D/g, ''), // Remover máscara para salvar somente os números
+      });
+
+      setError('');
+      Alert.alert('Sucesso!', 'Cadastro realizado com sucesso.');
+      navigation.navigate('home');
+    } catch (error: any) {
+      setError('Erro ao cadastrar: ' + error.message);
+    }
   };
-  
+
   return (
     <View style={styles.container}>
-
-      <TouchableOpacity style={styles.voltar} 
-      onPress={() => navigation.navigate('login')}>
-      <Feather name="arrow-left" style={styles.icon}/>
+      <TouchableOpacity style={styles.voltar} onPress={() => navigation.navigate('login')}>
+        <Feather name="arrow-left" style={styles.icon} />
       </TouchableOpacity>
       <View>
-
-      <Text style={styles.titulo}> WIMB </Text>
-         <Text style={styles.subtitulo}> WHERE IS MY BUS </Text>
+        <Text style={styles.titulo}>WIMB</Text>
+        <Text style={styles.subtitulo}>WHERE IS MY BUS</Text>
       </View>
 
-        <TextInput style={styles.campo}
-        placeholder={isFocused ? '' : 'Nome'}
+      <TextInput
+        style={styles.campo}
+        placeholder="Nome"
         value={nome}
         onChangeText={setNome}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}>
-        </TextInput>
-
-        <TextInput style={styles.campo} 
-        placeholder={isFocused2 ? '' : 'Email'}
+      />
+      <TextInput
+        style={styles.campo}
+        placeholder="Email"
         value={email}
         onChangeText={setEmail}
-        onFocus={() => setIsFocused2(true)}
-        onBlur={() => setIsFocused2(false)}>
-        </TextInput>
-
-        <TextInputMask
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <TextInputMask
         style={styles.campo}
-        type={'custom'}
-        options={{
-          mask: '(99) 99999-9999', // A máscara para telefone brasileiro
-        }}
-        placeholder={isFocused3 ? '' : 'Telefone'}
+        type="custom"
+        options={{ mask: '(99) 99999-9999' }}
+        placeholder="Telefone"
         value={telefone}
         onChangeText={setTelefone}
-        onFocus={() => setIsFocused3(true)}
-        onBlur={() => setIsFocused3(false)}>
-        </TextInputMask>
-
-        <TextInput style={styles.campo}
-        placeholder={isFocused4 ? '' : 'Senha'}
+        keyboardType="phone-pad"
+      />
+      <TextInput
+        style={styles.campo}
+        placeholder="Senha"
         value={senha}
         onChangeText={setSenha}
-        secureTextEntry={true} // Senha mascarada
+        secureTextEntry={true}
         autoCapitalize="none"
-        onFocus={() => setIsFocused4(true)}
-        onBlur={() => setIsFocused4(false)}
-        >
-        <Text>A senha deve conter no mínimo 6 caracteres, incluindo letras e números</Text>
-        
-          
-        </TextInput>
-        
-        {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
-        <TouchableOpacity style={styles.cadastrar}
-        onPress={handleSubmit}>
+      />
+      <Text style={{ fontSize: 12, color: 'gray', marginVertical: 10 }}>
+        A senha deve conter no mínimo 6 caracteres, incluindo letras e números
+      </Text>
 
-        <Text style={styles.textocadastrar}> Cadastrar </Text>
+      {error ? <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text> : null}
 
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.cadastrar} onPress={handleSubmit}>
+        <Text style={styles.textocadastrar}>Cadastrar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -150,7 +133,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#EBCB4A',
     padding: 15,
   },
-
   titulo: {
     fontSize: 35,
     textAlign: 'center',
@@ -158,16 +140,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 5,
   },
-
-  subtitulo:{
+  subtitulo: {
     fontSize: 10,
     textAlign: 'center',
     marginTop: 5,
     letterSpacing: 8,
-    marginBottom: 40
+    marginBottom: 40,
   },
-
-  campo:{
+  campo: {
     backgroundColor: 'white',
     borderRadius: 20,
     fontSize: 15,
@@ -177,15 +157,8 @@ const styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
     elevation: 5,
-    paddingVertical: 10
-
+    paddingVertical: 10,
   },
-  textInput:{
-    fontWeight: 'light',
-    fontSize: 10,
-    marginLeft: 70,
-  },
-
   cadastrar: {
     alignItems: 'center',
     borderRadius: 20,
@@ -194,20 +167,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     width: '80%',
-    paddingVertical: 12
+    paddingVertical: 12,
   },
-
-  textocadastrar:{
+  textocadastrar: {
     fontSize: 15,
     color: '#000000',
   },
-  
   voltar: {
     width: '100%',
-    marginTop: '0%'
+    marginTop: '0%',
   },
   icon: {
-    fontSize: 30
-  }
+    fontSize: 30,
+  },
 });
-
