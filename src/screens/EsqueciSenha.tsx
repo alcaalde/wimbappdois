@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Constants from 'expo-constants';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StackScreenProps } from '@react-navigation/stack';
 import { Feather } from '@expo/vector-icons';
+import { StackScreenProps } from '@react-navigation/stack';
+import { auth } from './config/firebaseConfig';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 type RootStackParamList = {
   login: undefined;
@@ -11,45 +12,72 @@ type RootStackParamList = {
 };
 
 type Props = StackScreenProps<RootStackParamList, 'senha'>;
-const Stack = createStackNavigator();
 
-export default function EsqueciSenha({ navigation }:Props){
-  const [text, setText] = useState('');
+export default function EsqueciSenha({ navigation }: Props) {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
-  const [text2, setText2] = useState('');
-  const [isFocused2, setIsFocused2] = useState(false);
+  // Expressão regular para validar o e-mail
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  // Função para enviar o e-mail de redefinição
+  const handleSendPasswordReset = async () => {
+    if (email === '') {
+      setError('Preencha o campo de e-mail.');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setError('Por favor, insira um e-mail válido.');
+      return;
+    }
+
+    try {
+      // Enviar e-mail de redefinição de senha
+      await sendPasswordResetEmail(auth, email);
+      setError('');
+      Alert.alert('E-mail enviado', 'Confira seu e-mail para redefinir a senha.');
+      navigation.navigate('login');
+    } catch (error: any) {
+      setError('Erro ao enviar e-mail: ' + error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
-
-      <TouchableOpacity style={styles.voltar} 
-      onPress={() => navigation.navigate('login')}>
-      <Feather name="arrow-left" style={styles.icon}/>
+      <TouchableOpacity style={styles.voltar} onPress={() => navigation.navigate('login')}>
+        <Feather name="arrow-left" style={styles.icon} />
       </TouchableOpacity>
-      
-      <View></View>
-      <Text style={styles.titulo}> WIMB </Text>
-      <Text style={styles.subtitulo}> WHERE IS MY BUS </Text>
+
+      <View>
+        <Text style={styles.titulo}>WIMB</Text>
+        <Text style={styles.subtitulo}>WHERE IS MY BUS</Text>
+      </View>
 
       <View style={styles.caixaTextos}>
-      <Text style={styles.tituloPagina}>Esqueceu a senha? </Text>
-      <Text style={styles.subtituloPagina}> 
-        Digite o email vinculado a sua conta para redefinir a senha. 
-      </Text>
+        <Text style={styles.tituloPagina}>Esqueceu a senha?</Text>
+        <Text style={styles.subtituloPagina}>
+          Digite o e-mail vinculado à sua conta para redefinir a senha.
+        </Text>
       </View>
-   
-       <TextInput style={styles.campo}
-        placeholder={isFocused ? '' : 'Email'}
-        value={text}
-        onChangeText={setText}
+
+      <TextInput
+        style={styles.campo}
+        placeholder={isFocused ? '' : 'E-mail'}
+        value={email}
+        onChangeText={setEmail}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}/>
+        onBlur={() => setIsFocused(false)}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
 
-        <TouchableOpacity style={styles.enviar}
-        onPress={() => navigation.navigate('login')}>
-        <Text style={styles.textocadastrar}> Enviar </Text>
-        </TouchableOpacity>
+      {error ? <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text> : null}
 
+      <TouchableOpacity style={styles.enviar} onPress={handleSendPasswordReset}>
+        <Text style={styles.textocadastrar}>Enviar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -57,21 +85,18 @@ export default function EsqueciSenha({ navigation }:Props){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems:'center',
+    alignItems: 'center',
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#EBCB4A',
     padding: 15,
   },
-
   voltar: {
     width: '100%',
   },
-
   icon: {
-    fontSize: 30
+    fontSize: 30,
   },
-
   titulo: {
     fontSize: 35,
     textAlign: 'center',
@@ -79,35 +104,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 5,
   },
-
-  subtitulo:{
+  subtitulo: {
     fontSize: 10,
     textAlign: 'center',
     marginTop: 5,
     letterSpacing: 8,
-    marginBottom: 40
+    marginBottom: 40,
   },
-
-  caixaTextos:{
-    alignItems:'flex-start',
+  caixaTextos: {
+    alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    width: '80%'
+    width: '80%',
   },
-
-  tituloPagina:{
+  tituloPagina: {
     fontSize: 20,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     marginBottom: 20,
     marginTop: 50,
   },
-
-  subtituloPagina:{
+  subtituloPagina: {
     fontSize: 15,
-    fontWeight:'light',
-    marginBottom: 35
+    marginBottom: 35,
   },
-
-  campo:{
+  campo: {
     backgroundColor: 'white',
     borderRadius: 20,
     fontSize: 15,
@@ -117,10 +136,9 @@ const styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
     elevation: 5,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
-
-   enviar: {
+  enviar: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
@@ -128,19 +146,13 @@ const styles = StyleSheet.create({
     padding: 12,
     borderWidth: 0,
     width: '80%',
-    backgroundColor:'#545454',
+    backgroundColor: '#545454',
     marginBottom: 40,
     elevation: 5,
-    paddingVertical: 15
+    paddingVertical: 15,
   },
-
-  textocadastrar:{
+  textocadastrar: {
     fontSize: 15,
     color: 'white',
   },
-
-  campoTitulo:{
-    marginRight: 10, 
-    textAlign: 'left'
-  }
 });
