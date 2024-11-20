@@ -7,6 +7,7 @@ import * as Location from 'expo-location';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Feather } from '@expo/vector-icons';
 
 export default function Linha813() {
   const navigation = useNavigation();
@@ -41,7 +42,7 @@ export default function Linha813() {
   }, []);
 
 
-  const displayText = minutesLeft < 1 ? "Chegando agora" : `${minutesLeft} min.`;
+  const displayText = minutesLeft < 1 ? "Chegando agora" : `${minutesLeft} min`;
 
   const [location, setLocation] = useState({
     latitude: 0,
@@ -537,6 +538,8 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
           <Marker coordinate={selectedCoord}
           image={require(('../../assets/transito2.png'))}>
             <Callout tooltip>
+
+
               <View style={styles.calloutContainer}>
                 <View style={styles.calloutBubble}>
                   <Text style={styles.calloutText}>Trânsito no trecho: 11km/h {'\n'} Atraso estimado: 13 minutos</Text>
@@ -550,23 +553,29 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
       
      
      <View style={styles.buttonteste}>
-     <Ionicons name="timer-outline" size={26} color="black" style={{marginRight: 1}}/>
+     <Ionicons name="timer-outline" size={26} color="white" style={{marginRight: 1}}/>
       
         <Text style={styles.buttontesttext}> {displayText} </Text>
         </View>
       
 
-     
+        <TouchableOpacity style={styles.onibus}>
+      <View style={styles.horario}>
+      <Feather name="heart" style={styles.icon}/>
+      </View>
+          <Text style={styles.onibusTexto}>813 - Terminal Cecap</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.buttonContainer}
        onPress={() => navigation.navigate('horario')}>
-        <AntDesign name="clockcircleo" size={24} color="black" />
+        <AntDesign name="clockcircleo" size={24} color="white" />
         <Text style={styles.buttonText}>Horários</Text>
       </TouchableOpacity>
 
       
       <TouchableOpacity style={styles.buttoncentralizar}
        onPress={() => navigation.navigate('home')}>
-        <FontAwesome name="home" size={24} color="black" />
+        <FontAwesome name="home" size={24} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -604,14 +613,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    top: 50,
-    right: -40,
+    top: '13%',
+    right: '22%',
     transform: [{ translateX: -50 }],
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 10,
+    backgroundColor: '#545454',
+    padding: 12,
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -621,14 +630,14 @@ const styles = StyleSheet.create({
 
   buttonteste: {
     position: 'absolute',
-    top: 100,
-    right: -40,
+    top: '13%',
+    right: -35,
     transform: [{ translateX: -50 }],
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 10,
+    backgroundColor: '#545454',
+    padding: 12,
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -637,21 +646,21 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     marginLeft: 8,
-    fontSize: 18,
-    color: 'black',
+    fontSize: 15,
+    color: 'white',
     fontWeight: 'bold',
   },
   buttontesttext: {
     marginLeft: 0.5,
-    fontSize: 18,
-    color: 'black',
+    fontSize: 15,
+    color: 'white',
     fontWeight: 'bold',
   },
   buttoncentralizar: {
     position: 'absolute',
     top: 40,
     left: 20, 
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#545454',
     borderRadius: 30,
     width: 60,
     height: 60,
@@ -663,4 +672,41 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
   },
+  onibus:{
+    width: '65%',
+    backgroundColor:'#545454',
+    height: 50,
+    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginBottom: '5%',
+    elevation: 5, 
+    marginTop: '13%',
+    marginLeft: '30%',
+    marginRight: '3%'
+  
+   },
+   onibusTexto: {
+    fontWeight: '700',
+    marginLeft: 20,
+    flex: 1,
+    fontSize: 12, 
+    color: 'white'
+   },
+   horario:{
+    backgroundColor: '#EBCB4A',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 7,
+    borderRadius: 20,
+    width: '23%',
+    marginLeft: -25
+   },
+   icon: {
+    color: 'black',
+    fontSize: 20, 
+    fontWeight: 'bold'
+   },
 });
