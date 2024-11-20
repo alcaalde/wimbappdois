@@ -5,12 +5,43 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import CountDown from 'react-native-countdown-component';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Linha813() {
   const navigation = useNavigation();
+  const [minutesLeft, setMinutesLeft] = useState(58);
+
+  useEffect(() => {
+    
+    const loadTimer = async () => {
+      try {
+        const savedTime = await AsyncStorage.getItem('busTimer');
+        if (savedTime !== null) {
+          setMinutesLeft(parseInt(savedTime)); 
+        }
+      } catch (error) {
+        console.error('Erro ao carregar tempo', error);
+      }
+    };
+
+    loadTimer();
+
+    
+    const timerInterval = setInterval(() => {
+      setMinutesLeft(prev => {
+        const newTime = prev > 0 ? prev - 1 : 10; 
+        AsyncStorage.setItem('busTimer', newTime.toString()); 
+        return newTime;
+      });
+    }, 60000);
+
+  
+    return () => clearInterval(timerInterval);
+  }, []);
+
+
+  const displayText = minutesLeft < 1 ? "Chegando agora" : `${minutesLeft} min.`;
 
   const [location, setLocation] = useState({
     latitude: 0,
@@ -520,15 +551,8 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
      
      <View style={styles.buttonteste}>
      <Ionicons name="timer-outline" size={26} color="black" style={{marginRight: 1}}/>
-      <CountDown
-        size={20}
-        digitStyle={{backgroundColor:'#EBCB4A', witdh: 10, height: 33}}
-        until={60 * 57 * 30}
-        timeToShow={['M']}
-        timeLabels={{m: null, s: null}}
-        onPress={() => alert('Baseado na sua localização: Terminal CECAP')}>
-        </CountDown>
-        <Text style={styles.buttontesttext}> Min. </Text>
+      
+        <Text style={styles.buttontesttext}> {displayText} </Text>
         </View>
       
 
