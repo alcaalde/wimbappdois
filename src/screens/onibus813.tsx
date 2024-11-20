@@ -551,7 +551,6 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
      
      <View style={styles.buttonteste}>
      <Ionicons name="timer-outline" size={26} color="black" style={{marginRight: 1}}/>
-      
         <Text style={styles.buttontesttext}> {displayText} </Text>
         </View>
       
