@@ -5,6 +5,9 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import CountDown from 'react-native-countdown-component';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Linha813() {
   const navigation = useNavigation();
@@ -15,6 +18,7 @@ export default function Linha813() {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
+
 
   const getUserLocation = async () => {
     try {
@@ -34,7 +38,6 @@ export default function Linha813() {
       await Location.requestForegroundPermissionsAsync();
       getUserLocation();
 
-      // Atualiza a cada 30 segundos
       const intervalId = setInterval(() => {
         getUserLocation();
       }, 30000);
@@ -42,6 +45,8 @@ export default function Linha813() {
       return () => clearInterval(intervalId);
     })();
   }, []);
+
+
 
   const [routeCoordinates, setRouteCoordinates] = useState([
     { latitude: -23.384312181770227, longitude: -46.399131662317785 },
@@ -510,7 +515,22 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
           </Marker>
         )}
       </MapView>
+
+      
      
+     <View style={styles.buttonteste}>
+     <Ionicons name="timer-outline" size={26} color="black" style={{marginRight: 1}}/>
+      <CountDown
+        size={20}
+        digitStyle={{backgroundColor:'#EBCB4A', witdh: 10, height: 33}}
+        until={60 * 57 * 30}
+        timeToShow={['M']}
+        timeLabels={{m: null, s: null}}
+        onPress={() => alert('Baseado na sua localização: Terminal CECAP')}>
+        </CountDown>
+        <Text style={styles.buttontesttext}> Min. </Text>
+        </View>
+      
 
      
       <TouchableOpacity style={styles.buttonContainer}
@@ -574,8 +594,31 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+
+  buttonteste: {
+    position: 'absolute',
+    top: 100,
+    right: -40,
+    transform: [{ translateX: -50 }],
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   buttonText: {
     marginLeft: 8,
+    fontSize: 18,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  buttontesttext: {
+    marginLeft: 0.5,
     fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
