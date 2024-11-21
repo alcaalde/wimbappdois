@@ -12,7 +12,8 @@ const HorarioTela = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Horário Linha 813 {'\n'}Ponto de ônibus: Terminal CECAP</Text>
+        <Text style={styles.titulo}>Linha 813</Text>
+         <Text style={styles.subtitulo}> Local de partida: Terminal CECAP</Text>
       </View>
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         {horarios.map((horario, index) => (
@@ -28,7 +29,7 @@ const HorarioTela = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f1da7f',
+    backgroundColor: '#EBCB4A',
     paddingTop: 50, 
   },
   headerContainer: {
@@ -38,9 +39,15 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddd',
     alignItems: 'center',
   },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  titulo: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#333',
+    textAlign: 'left'
+  },
+  subtitulo: {
+    fontSize: 15,
+    fontWeight: '400',
     color: '#333',
   },
   horarioContainer: {
@@ -48,8 +55,8 @@ const styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
     marginBottom: 10,
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
+    backgroundColor: '#545454',
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -58,7 +65,7 @@ const styles = StyleSheet.create({
   },
   horarioText: {
     fontSize: 18,
-    color: '#333',
+    color: 'white',
     textAlign: 'center',
   },
 });

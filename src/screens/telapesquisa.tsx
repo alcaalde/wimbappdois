@@ -9,7 +9,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 type NavigationProps = StackNavigationProp<RootStackParamList>;
 
 const pages: { id: string; title: string; route: keyof RootStackParamList }[] = [
-  { id: '1', title: 'Ônibus 813 - Terminal CECAP', route: 'onibus813' },
+  { id: '1', title: 'Linha 813 - Terminal CECAP', route: 'onibus813' },
 ];
 
 export default function SearchScreen() {
@@ -89,11 +89,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   searchContainer: {
-    position: 'absolute',
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F0F0F0',
-    borderRadius: 20,
+    borderRadius: 25,
     paddingHorizontal: 10,
     paddingVertical: 10,
     width: '90%',

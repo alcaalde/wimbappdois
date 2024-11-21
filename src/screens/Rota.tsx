@@ -68,7 +68,7 @@ export default function Mapa() {
 
       <TouchableOpacity style={styles.test}
       onPress={() => navigation.navigate('telapesquisa')}>
-      <FontAwesome5 name="search-location" size={25} color="black" style={styles.icon} />
+      <FontAwesome5 name="search-location" size={20} color="black" style={styles.icon} />
       <Text style={styles.text}> Pesquisar rota </Text>
       </TouchableOpacity>
 
@@ -111,16 +111,18 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     height: 50,
-    borderWidth: 0.6,
+    borderWidth: 0,
     borderColor: 'black',
     elevation: 10
   },
   icon: {
-    marginRight: 5, 
+    marginLeft: 10, 
+
   },
   text: {
     color: 'black',
     fontSize: 16,
     fontWeight: '400', 
+    marginLeft: 10
   },
 });
