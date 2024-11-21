@@ -8,18 +8,20 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 type NavigationProps = StackNavigationProp<RootStackParamList>;
 
+// pega as telas do stack.routes e organiza elas por id, titúlo e a tela que ele precisa entrar
 const pages: { id: string; title: string; route: keyof RootStackParamList }[] = [
   { id: '1', title: 'Linha 813 - Terminal CECAP', route: 'onibus813' },
 ];
 
 export default function SearchScreen() {
-  const [query, setQuery] = useState('');
-  const [filteredPages, setFilteredPages] = useState<{ id: string; title: string; route: keyof RootStackParamList }[]>([]);
+  const [query, setQuery] = useState(''); // texto de input
+  const [filteredPages, setFilteredPages] = useState<{ id: string; title: string; route: keyof RootStackParamList }[]>([]); //páginas filtradas para aparecer
   const navigation = useNavigation<NavigationProps>();
 
+  // função de pesquisa
   const handleSearch = (text: string) => {
     setQuery(text);
-    if (text) {
+    if (text) { // se o texto da query for válido, exibir a página correspondente, se não ele não exibe nada
       const results = pages.filter((page) =>
         page.title.toLowerCase().includes(text.toLowerCase())
       );
@@ -29,6 +31,7 @@ export default function SearchScreen() {
     }
   };
 
+  // pega as páginas do react navigation para mandar para mandar para a tela correspondente a pesquisa
   const handleSelectPage = (route: keyof RootStackParamList) => {
     navigation.navigate(route);
     setQuery('');
@@ -39,6 +42,7 @@ export default function SearchScreen() {
 
   return (
     <View style={styles.container}>
+      {/* botão para voltar uma tela atrás */}
       <TouchableOpacity
         style={styles.buttonvoltar}
         onPress={() => navigation.goBack()}
@@ -50,6 +54,7 @@ export default function SearchScreen() {
         source={require(('../../assets/icon.png'))}
       />
       
+      {/* searchbar */}
       <View style={styles.searchContainer}>
         <Feather name="search" size={24} color="black" style={styles.icon} />
         <TextInput
@@ -60,7 +65,7 @@ export default function SearchScreen() {
         />
       </View>
 
-  
+  {/* aqui ele filtra a página, pegando a pesquisa correspondente pelo texto e exibindo embaixo da searchbar o resultado da pesquisa, com a tela correspondente */}
       {filteredPages.length > 0 && (
         <FlatList
           style={styles.suggestionList}
@@ -109,7 +114,7 @@ const styles = StyleSheet.create({
   suggestionList: {
     borderRadius: 10,
     position: 'absolute',
-    top: '52%', 
+    top: '65%', 
     width: '90%',
   },
   suggestionItem: {

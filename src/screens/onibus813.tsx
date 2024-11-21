@@ -7,14 +7,16 @@ import * as Location from 'expo-location';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Feather } from '@expo/vector-icons';
+
 
 export default function Linha813() {
   const navigation = useNavigation();
+  
+  // Async do tempo pro ônibus chegar
   const [minutesLeft, setMinutesLeft] = useState(37);
 
+  // Effect pra pegar os minutos que faltam e salvar dentro da função, para quando sair da tela e acessar o timer naão resete
   useEffect(() => {
-    
     const loadTimer = async () => {
       try {
         const savedTime = await AsyncStorage.getItem('busTimer');
@@ -25,13 +27,12 @@ export default function Linha813() {
         console.error('Erro ao carregar tempo', error);
       }
     };
-
     loadTimer();
 
-    
+    // O timer. Pega o minutesLeft, vê quantos minutos falta, e tira um a cada 60 segundos. O async se encontra dentro de setminutesleft pra salvar o tempo que falta no async
     const timerInterval = setInterval(() => {
       setMinutesLeft(prev => {
-        const newTime = prev > 0 ? prev - 1 : 10; 
+        const newTime = prev > 0 ? prev - 1 : 37; 
         AsyncStorage.setItem('busTimer', newTime.toString()); 
         return newTime;
       });
@@ -41,7 +42,7 @@ export default function Linha813() {
     return () => clearInterval(timerInterval);
   }, []);
 
-
+// texto que exibe o tempo que falta para o ônibus chegar
   const displayText = minutesLeft < 1 ? "Chegando agora" : `${minutesLeft} min`;
 
   const [location, setLocation] = useState({
@@ -51,7 +52,7 @@ export default function Linha813() {
     longitudeDelta: 0.01,
   });
 
-
+// async que salva a localização do usuário (para a simulação do ônibus andando no mapa)
   const getUserLocation = async () => {
     try {
       const { coords } = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
@@ -61,10 +62,11 @@ export default function Linha813() {
         longitude: coords.longitude,
       }));
     } catch (error) {
-      console.error("Error getting location:", error);
+      console.error("Erro na localização:", error);
     }
   };
 
+  // A cada 30 segundos, a localização será atualizada
   useEffect(() => {
     (async () => {
       await Location.requestForegroundPermissionsAsync();
@@ -78,8 +80,39 @@ export default function Linha813() {
     })();
   }, []);
 
+  // Async do botão FAV (Substituir depois pela função do banco de dados)
 
+  const [isFavorite, setIsFavorite] = useState(false);
+  const FAVORITE_KEY = 'isFavorite';
 
+ 
+  useEffect(() => {
+    const loadFavoriteState = async () => {
+      try {
+        const savedState = await AsyncStorage.getItem(FAVORITE_KEY);
+        if (savedState !== null) {
+          setIsFavorite(JSON.parse(savedState)); 
+        }
+      } catch (error) {
+        console.error('Erro ao carregar estado favorito:', error);
+      }
+    };
+
+    loadFavoriteState();
+  }, []);
+
+ 
+  const trocarFav = async () => {
+    try {
+      const newState = !isFavorite;
+      setIsFavorite(newState);
+      await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(newState));
+    } catch (error) {
+      console.error('Erro ao salvar estado favorito:', error);
+    }
+  };
+
+// Rota 813 (completa)
   const [routeCoordinates, setRouteCoordinates] = useState([
     { latitude: -23.384312181770227, longitude: -46.399131662317785 },
     { latitude: -23.384070915227518, longitude: -46.399067289299445,},
@@ -219,6 +252,8 @@ export default function Linha813() {
     { latitude: -23.461378376170114, longitude: -46.4976710899943},
     { latitude: -23.4621115933514, longitude: -46.497311673973556},
   ]);
+
+  // rota 813 (parte do trânsito)
   
 const [routeCoordinates2, setRouteCoordinates2] = useState ([
   { latitude: -23.41483510550068, longitude: -46.40433689023493},
@@ -232,17 +267,19 @@ const [routeCoordinates2, setRouteCoordinates2] = useState ([
   { latitude: -23.418075944405473, longitude: -46.406286629444566},
   { latitude: -23.418258078522197, longitude: -46.40680161358353},
   { latitude: -23.418351606761608, longitude: -46.40724686028383},
-  { latitude: -23.419188435359274, longitude: -46.40713420750172},
+  {latitude: -23.419188435359274, longitude: -46.40713420750172},
   { latitude: -23.421551216983808, longitude: -46.40695181727137},
   { latitude: -23.42235356865979, longitude: -46.40651729940367},
   { latitude: -23.42298855516791, longitude: -46.40648511288871},
   { latitude: -23.42339218841393, longitude: -46.40665140985277},
 ]);
 
+// para a parte do transito, toda vez que clicar no lugar pegar a lat e lng do lugar clicado
 const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
 
 
   return (
+    //MapView do mapa, ou seja, mostrando o mapa no aplicativo
     <View style={styles.container}>
       <MapView  
         style={styles.map}
@@ -252,14 +289,17 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
           latitudeDelta: 0.19,
           longitudeDelta: 0.14,
         }}
+        // Quando pressionar em qualquer lugar do mapa que nao seja da parte de trânsito, tirar o marker
         onPress={() => setSelectedCoord(null)}
       >
+        
+  {/* Rota 813*/}
          <Polyline
           coordinates={routeCoordinates}
           strokeColor="#000000"
           strokeWidth={4} 
         />
-
+   {/*rota trânsito, ao clicar, vai exibir o popup do trânsito*/}
       <Polyline
           coordinates={routeCoordinates2}
           strokeColor="#FF0000"
@@ -270,276 +310,276 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
           }}
       />
 
+{/* marker de simulação do ônibus na vida real se mexendo*/}
 <Marker  
             coordinate={location}
             image={require(('../../assets/onibusirl.png'))}
           />
 
-
+{/* markers daqui em diante são dos pontos de ônibus */}
           <Marker  
             coordinate={{ latitude: -23.384250368413262, longitude: -46.39907927654249 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rua Jovita de Quadros Góes 26"
           />
 
           <Marker  
             coordinate={{ latitude: -23.382555375277256, longitude: -46.39957022124962 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rua Brinco de Princesa 906"
           />
             
             <Marker  
             coordinate={{ latitude: -23.38422431738303, longitude: -46.400067806860285 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Osvaldo Matias Góes, 88"
           />
 
 <Marker  
             coordinate={{ latitude: -23.385661297335947, longitude: -46.40065763785309 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Jovita de Quadros Góes, 510"
           />
 
 <Marker  
             coordinate={{ latitude: -23.383552604971136, longitude: -46.402139140529634 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Orlando Marquês, 164"
           />
 
 <Marker  
             coordinate={{ latitude: -23.384039506135164,  longitude: -46.40321150045056 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rua Orlando Marques 243"
           />
 
 <Marker  
             coordinate={{ latitude: -23.38621963246637, longitude: -46.40169232982112 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rua Rodolfo Turriano, 328"
           />
 
 <Marker  
             coordinate={{ latitude: -23.38600735308939, longitude: -46.39920605252148 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Gerânio, 2"
           />
 
 <Marker  
             coordinate={{ latitude: -23.394002399629628, longitude: -46.397703782425815 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Estrada Acacio Antonio Batista 1527"
           />
 
 <Marker  
             coordinate={{ latitude: -23.396846400751766, longitude: -46.398124039321615 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Estrada do Morro Grande"
           />
 
 <Marker  
             coordinate={{ latitude: -23.399276463976197, longitude: -46.39910956318804 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Estrada do Morro Grande"
           />
 
 <Marker  
             coordinate={{ latitude: -23.400977227754346, longitude: -46.400294383834876 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Estrada Acácio Antônio Batista 649"
           />
 
 <Marker  
             coordinate={{ latitude: -23.40200148018183, longitude: -46.40340176522688 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Estrada Acacio Antonio Batista 309"
           />
 
 <Marker  
             coordinate={{ latitude: -23.402319893008567, longitude: -46.40394015954879 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Estrada Acacio Antonio Batista 247"
           />
 
 <Marker  
             coordinate={{ latitude: -23.402928665693704, longitude: -46.4050807384734 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Estrada Acacio Antonio Batista 101"
           />
 
 <Marker  
             coordinate={{ latitude: -23.40423734668427, longitude: -46.40664338745621 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Paschoal Thomeu, 2502"
           />
 
 <Marker  
             coordinate={{ latitude: -23.405617907183586, longitude: -46.406259203090684 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Armando Bei, 1939"
           />
 
 <Marker  
             coordinate={{ latitude: -23.40609676290352, longitude: -46.404569591252866 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Armando Bei, 226-278"
           />
          
          <Marker  
             coordinate={{ latitude: -23.4065691202419, longitude:  -46.40283272929486 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Armando Bei, 436-496"
           />
 
 <Marker  
             coordinate={{ latitude: -23.407090008458876, longitude: -46.40108874573444 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Armando Bei, 579"
           />
 
 <Marker  
             coordinate={{ latitude: -23.409457544412856, longitude: -46.402012470052675 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. São Ludgéro, 58"
           />
 
 <Marker  
             coordinate={{ latitude: -23.411032563979788, longitude: -46.40336322450713 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Doze de Junho, 336"
           />
 
 <Marker  
             coordinate={{ latitude: -23.4130044776505, longitude: -46.40464396479226 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Doze de Junho, 55"
           />
 
 <Marker  
             coordinate={{ latitude: -23.414532125274086, longitude: -46.40452051410736 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Orlando Ramos, 455"
           />
 
 <Marker  
             coordinate={{ latitude: -23.416907521206745, longitude: -46.4057686121451 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Orlando Ramos, 746-808"
           />
 
 <Marker  
             coordinate={{ latitude: -23.41898001866601, longitude: -46.40717956632621 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Dr. Arthur Marcondes de Siqueira, 815"
           />
 
 <Marker  
             coordinate={{ latitude: -23.42063535362222, longitude: -46.40711183094698 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Avenida Doutor Artur Marcondes de Siqueira"
           />
 
 <Marker  
             coordinate={{ latitude: -23.423629335892215, longitude: -46.40711753641062 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Felício Antônio Alves, 2"
           />
 
 <Marker  
             coordinate={{ latitude: -23.424034064643607, longitude: -46.40812986772707 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Francisco Xavier Correia, 1535"
           />
 
 <Marker  
             coordinate={{ latitude: -23.42222905148769, longitude: -46.41384118439094 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. O1, 676"
           />
 
 <Marker  
             coordinate={{ latitude: -23.422179583417666, longitude: -46.41820073747161 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Lindú, 71"
           />
 
 <Marker  
             coordinate={{ latitude: -23.42440122677214, longitude: -46.41889377565839 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="100 R. Carlos Drumond de Andrade"
           />
 
 <Marker  
             coordinate={{ latitude: -23.432438548997226, longitude: -46.42038365920277 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rod. Pres. Dutra, 106"
           />
 
 <Marker  
             coordinate={{ latitude: -23.434472844497765, longitude: -46.42570645507899 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Fartura, 236-310"
           />
 
 <Marker  
             coordinate={{ latitude: -23.438772603512998, longitude: -46.43593895230933 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Carmela Dutra, 960-1032"
           />
 
 <Marker  
             coordinate={{ latitude: -23.440290387788146, longitude: -46.43955626536575 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rod. Pres. Dutra"
           />
 
 <Marker  
             coordinate={{ latitude: -23.44339001216647, longitude: -46.447023356266754 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rod. Pres. Dutra"
           />
 
 <Marker  
             coordinate={{ latitude: -23.446735948554338, longitude: -46.4548842103696 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rod. Pres. Dutra"
           />
 
 <Marker  
             coordinate={{ latitude: -23.449038626575742, longitude: -46.46010043753456}}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="R. Manoel Alonso Almendra, 402"
           />
 
 <Marker  
             coordinate={{ latitude: -23.45137475616074, longitude: -46.46569321246609 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rod. Pres. Dutra-Pista Lateral, 94"
           />
 
 <Marker  
             coordinate={{ latitude: -23.45802942995318, longitude: -46.4818498202383 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Rod. Pres. Dutra-Pista Lateral, 1574"
           />
 
 <Marker  
             coordinate={{ latitude: -23.458598522018633, longitude: -46.49518860990688 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Av. Monteiro Lobato, Alt. do 3555"
           />
 
 <Marker  
             coordinate={{ latitude: -23.461728546722558, longitude: -46.49725460501406 }}
-            image={require(('../../assets/pontorota2.png'))}
+            image={require(('../../assets/pontorota.png'))}
             title="Terminal Metropolitano CECAP"
           />
 
+ {/* marker pra exibir informações do trânsito, callout é pra custonização de bolha */}
 {selectedCoord && (
           <Marker coordinate={selectedCoord}
           image={require(('../../assets/transito2.png'))}>
             <Callout tooltip>
-
-
               <View style={styles.calloutContainer}>
                 <View style={styles.calloutBubble}>
                   <Text style={styles.calloutText}>Trânsito no trecho: 11km/h {'\n'} Atraso estimado: 13 minutos</Text>
@@ -551,28 +591,29 @@ const [selectedCoord, setSelectedCoord] = useState<LatLng | null>(null);
       </MapView>
 
       
-     
+     {/* botão de exibição do horário */}
      <View style={styles.buttonteste}>
      <Ionicons name="timer-outline" size={26} color="white" style={{marginRight: 1}}/>
-      
         <Text style={styles.buttontesttext}> {displayText} </Text>
         </View>
       
-
-        <TouchableOpacity style={styles.onibus}>
-      <View style={styles.horario}>
-      <Feather name="heart" style={styles.icon}/>
-      </View>
-          <Text style={styles.onibusTexto}>813 - Terminal Cecap</Text>
+ {/* botão de favorito */}
+        <TouchableOpacity onPress={trocarFav} style={styles.buttonfav}>
+        <AntDesign
+          name={isFavorite ? 'heart' : 'hearto'} 
+          size={30}
+          color={isFavorite ? 'red' : 'white'} 
+        />
       </TouchableOpacity>
 
+    {/* botão de horário */}
       <TouchableOpacity style={styles.buttonContainer}
        onPress={() => navigation.navigate('horario')}>
         <AntDesign name="clockcircleo" size={24} color="white" />
         <Text style={styles.buttonText}>Horários</Text>
       </TouchableOpacity>
 
-      
+      {/* botão home */}
       <TouchableOpacity style={styles.buttoncentralizar}
        onPress={() => navigation.navigate('home')}>
         <FontAwesome name="home" size={24} color="white" />
@@ -613,8 +654,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    top: '13%',
-    right: '22%',
+    top: 47,
+    right: -37,
     transform: [{ translateX: -50 }],
     flexDirection: 'row',
     alignItems: 'center',
@@ -672,41 +713,20 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
   },
-  onibus:{
-    width: '65%',
-    backgroundColor:'#545454',
-    height: 50,
-    borderRadius: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginBottom: '5%',
-    elevation: 5, 
-    marginTop: '13%',
-    marginLeft: '30%',
-    marginRight: '3%'
-  
-   },
-   onibusTexto: {
-    fontWeight: '700',
-    marginLeft: 20,
-    flex: 1,
-    fontSize: 12, 
-    color: 'white'
-   },
-   horario:{
-    backgroundColor: '#EBCB4A',
-    height: '100%',
+  buttonfav: {
+    position: 'absolute',
+    top: 110,
+    left: 20, 
+    backgroundColor: '#545454',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 7,
-    borderRadius: 20,
-    width: '23%',
-    marginLeft: -25
-   },
-   icon: {
-    color: 'black',
-    fontSize: 20, 
-    fontWeight: 'bold'
-   },
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
+  },
 });

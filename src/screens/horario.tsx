@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
+// todos os horários disponíveis
 const horarios = [
   '05:00', '06:00', '07:00', '08:00',
   '09:00', '10:00', '12:00', '14:00',
@@ -15,6 +16,8 @@ const HorarioTela = () => {
         <Text style={styles.titulo}>Linha 813</Text>
          <Text style={styles.subtitulo}> Local de partida: Terminal CECAP</Text>
       </View>
+
+      {/* scrollview mostrando todos os dados da const horários aqui em formato de lista */}
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         {horarios.map((horario, index) => (
           <View key={index} style={styles.horarioContainer}>

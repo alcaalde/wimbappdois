@@ -11,6 +11,7 @@ export default function Mapa() {
   const mapRef = useRef<MapView>(null);
   const navigation = useNavigation();
 
+  // pede a localização do usuário e, caso permitida, pega a localização dele
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -24,6 +25,7 @@ export default function Mapa() {
     })();
   }, []);
 
+  // se a localização e a função mapRef forem positivas, o botão de centralizar vai usar essa função para centralizar a localização atual do usuário
   const goToUserLocation = () => {
     if (location && mapRef.current) {
       mapRef.current.animateToRegion({
@@ -37,6 +39,7 @@ export default function Mapa() {
 
   return (
     <View style={styles.container}>
+      {/* se a localização for real, exibe o mapa */}
       {location && (
         <MapView
           ref={mapRef}
@@ -50,6 +53,8 @@ export default function Mapa() {
           showsUserLocation={true}
           showsMyLocationButton={false} 
         >
+
+          {/* marker dos pontos de ônibus */}
           <Marker
             coordinate={{ latitude: -23.454855496866678, longitude: -46.50189870636914 }}
             title="Ponto de ônibus 1"
@@ -62,10 +67,13 @@ export default function Mapa() {
           </Marker>
         </MapView>
       )}
+
+      {/* botão para centralizar a localização do usuário */}
       <TouchableOpacity style={styles.buttoncentralizar} onPress={goToUserLocation}>
       <FontAwesome6 name="location-crosshairs" size={24} color="black" />
       </TouchableOpacity>
 
+  {/* botão para mandar para a tela de pesquisa */}
       <TouchableOpacity style={styles.test}
       onPress={() => navigation.navigate('telapesquisa')}>
       <FontAwesome5 name="search-location" size={20} color="black" style={styles.icon} />
