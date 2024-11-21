@@ -10,7 +10,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Linha813() {
   const navigation = useNavigation();
-  const [minutesLeft, setMinutesLeft] = useState(58);
+  const [minutesLeft, setMinutesLeft] = useState(37);
 
   useEffect(() => {
     
