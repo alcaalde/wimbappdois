@@ -111,8 +111,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     height: 50,
-    borderWidth: 1,
+    borderWidth: 0.6,
     borderColor: 'black',
+    elevation: 10
   },
   icon: {
     marginRight: 5, 
@@ -120,6 +121,6 @@ const styles = StyleSheet.create({
   text: {
     color: 'black',
     fontSize: 16,
-    fontWeight: 'bold', 
+    fontWeight: '400', 
   },
 });

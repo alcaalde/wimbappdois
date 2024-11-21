@@ -111,8 +111,8 @@ export default function Cad({ navigation }: Props) {
         secureTextEntry={true}
         autoCapitalize="none"
       />
-      <Text style={{ fontSize: 12, color: 'gray', marginVertical: 10 }}>
-        A senha deve conter no mínimo 6 caracteres, incluindo letras e números
+      <Text style={styles.exigenciaSenha}>
+        A senha deve conter no mínimo 6 caracteres, incluindo letras e números.
       </Text>
 
       {error ? <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text> : null}
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     fontSize: 15,
     color: 'black',
-    margin: 15,
+    marginTop: 20,
     padding: 12,
     width: '80%',
     alignSelf: 'center',
@@ -180,4 +180,14 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 30,
   },
+  
+  exigenciaSenha: {
+    fontSize: 10,
+    maxWidth: '75%',
+    alignSelf: 'flex-start',
+    marginLeft: '12%',
+    lineHeight: 12,
+    marginTop: 5,
+    marginBottom: '5%'
+  }
 });

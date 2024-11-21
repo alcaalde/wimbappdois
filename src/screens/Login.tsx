@@ -90,13 +90,74 @@ export default function Login({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: Constants.statusBarHeight, backgroundColor: '#EBCB4A', padding: 15 },
-  titulo: { fontSize: 35, textAlign: 'center', marginTop: 15, fontWeight: 'bold', letterSpacing: 5 },
-  subtitulo: { fontSize: 10, textAlign: 'center', marginTop: 5, letterSpacing: 8, marginBottom: 40 },
-  campo: { backgroundColor: 'white', borderRadius: 20, fontSize: 15, margin: 15, padding: 12, width: '80%' },
-  entrar: { justifyContent: 'center', alignItems: 'center', borderRadius: 20, margin: 10, padding: 12, borderWidth: 1, width: '80%' },
-  textoenviar: { fontSize: 15 },
-  cadastrar: { justifyContent: 'center', alignItems: 'center', marginTop: 3, backgroundColor: '#545454', width: '80%', padding: 12, borderRadius: 20 },
-  textocadastrar: { fontSize: 15, color: 'white' },
-  textoinferior: { fontSize: 10, textAlign: 'center', marginTop: 15, textDecorationLine: 'underline' },
+  container: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    paddingTop: Constants.statusBarHeight, 
+    backgroundColor: '#EBCB4A',
+    padding: 15 
+  },
+
+  titulo: { 
+    fontSize: 35, 
+    textAlign: 'center', 
+    marginTop: 15, 
+    fontWeight: 'bold', 
+    letterSpacing: 5 
+  },
+
+  subtitulo: { 
+    fontSize: 10, 
+    textAlign: 'center', 
+    marginTop: 5, 
+    letterSpacing: 8,
+    marginBottom: 40 
+  },
+
+  campo: { 
+    backgroundColor: 'white', 
+    borderRadius: 20, 
+    fontSize: 15, 
+    margin: 15, 
+    padding: 12, 
+    width: '80%',
+    elevation: 10
+  },
+
+  entrar: { 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    borderRadius: 20, 
+    margin: 10, 
+    padding: 12, 
+    borderWidth: 1, 
+    width: '80%' 
+  },
+
+  textoenviar: { 
+    fontSize: 15 
+  },
+
+  cadastrar: { 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginTop: 3, 
+    backgroundColor: '#545454', 
+    width: '80%', 
+    padding: 12, 
+    borderRadius: 20 
+  },
+
+  textocadastrar: { 
+    fontSize: 15, 
+    color: 'white' 
+  },
+
+  textoinferior: { 
+    fontSize: 10, 
+    textAlign: 'center', 
+    marginTop: 15, 
+    textDecorationLine: 'underline' 
+  },
 });

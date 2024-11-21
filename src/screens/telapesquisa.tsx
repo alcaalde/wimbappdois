@@ -49,7 +49,7 @@ export default function SearchScreen() {
         style={styles.Logo}
         source={require(('../../assets/icon.png'))}
       />
-      <Text style={styles.textTitulo}>Pesquise a sua linha</Text>
+      
       <View style={styles.searchContainer}>
         <Feather name="search" size={24} color="black" style={styles.icon} />
         <TextInput
@@ -93,9 +93,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F0F0F0',
-    borderRadius: 8,
+    borderRadius: 20,
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: 10,
     width: '90%',
     elevation: 5,
   },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   searchBar: {
     flex: 1,
     fontSize: 16,
-    color: '#000',
+    color: '#000'
   },
   suggestionList: {
     borderRadius: 10,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
    bottom: '24%',
   },
   Logo: {
-    bottom: '30%',
+ 
     width: 200,
     height: 200,
     alignItems: 'center',
