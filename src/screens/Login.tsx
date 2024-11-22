@@ -34,12 +34,15 @@ export default function Login({ navigation }: Props) {
     }
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, senha);
+       // Tenta autenticar o usuário com o e-mail e a senha fornecidos
+      const userCredential = await signInWithEmailAndPassword(auth, email, senha); 
       const userId = userCredential.user.uid;
 
+       // Cria uma referência ao banco de dados Firebase no caminho específico para o usuário
       const userRef = ref(db, `users/${userId}`);
       const snapshot = await get(userRef);
 
+        // Verifica se os dados do usuário existem no banco de dados
       if (snapshot.exists()) {
         const userData = snapshot.val();
         console.log('Dados do usuário:', userData);
@@ -49,7 +52,7 @@ export default function Login({ navigation }: Props) {
         setError('Usuário não encontrado no banco de dados.');
       }
     } catch (error: any) {
-      setError('Erro ao entrar: ' + error.message);
+      setError('E-mail ou senha incorretos! ');
     }
   };
 

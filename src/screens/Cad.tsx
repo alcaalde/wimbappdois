@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TextInputMask } from 'react-native-masked-text';
 import { auth, db } from './config/firebaseConfig';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
 
 type RootStackParamList = {
@@ -53,9 +53,15 @@ export default function Cad({ navigation }: Props) {
     try {
       // Cadastrar usuário no Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
-      const userId = userCredential.user.uid;
+      const user = userCredential.user;
+
+      // Atualizar o displayName do usuário no Firebase Authentication
+      await updateProfile(user, {
+        displayName: nome, // Defina o nome do usuário aqui
+      });
 
       // Salvar dados no Realtime Database
+      const userId = user.uid;
       await set(ref(db, `users/${userId}`), {
         nome,
         email,
