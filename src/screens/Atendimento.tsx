@@ -1,8 +1,11 @@
+// Importa os componentes e hooks necessários
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
- 
+
+// Função principal da tela Atendimento
 export default function Atendimento() {
+  // Estados para armazenar os dados dos campos e o status da requisição
   const [nome, setNome] = useState('');
   const [isFocusedNome, setIsFocusedNome] = useState(false);
   const [email, setEmail] = useState('');
@@ -11,49 +14,47 @@ export default function Atendimento() {
   const [isFocusedTexto, setIsFocusedTexto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
- 
+
+  // Função que envia a mensagem via emailjs
   const handleSend = () => {
     if (!nome.trim()) return;
- 
+
     setLoading(true);
     setStatusMessage('');
- 
+
     const templateParams = {
       nome: nome,
       email: email,
       texto: texto,
     };
- 
+
     emailjs.send('service_t89eudc', 'template_xlmilk9', templateParams, '4b6D5sKby0Ibz6iB9')
       .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
         setStatusMessage('Mensagem enviada com sucesso!');
         setNome('');
         setEmail('');
         setTexto('');
       })
       .catch((err) => {
-        console.error('FAILED...', err);
         setStatusMessage('Falha ao enviar a mensagem. Tente novamente.');
       })
       .finally(() => {
         setLoading(false);
       });
   };
- 
+
   return (
-<View style={styles.container}>
+    <View style={styles.container}>
+      <Text style={styles.titulo}>WIMB</Text>
+      <Text style={styles.subtitulo}>WHERE IS MY BUS</Text>
 
-<Text style={styles.titulo}> WIMB </Text>
-<Text style={styles.subtitulo}> WHERE IS MY BUS </Text>
-
-<View style={styles.caixaTextos}>
-      <Text style={styles.tituloPagina}>Entre em contato </Text>
-      <Text style={styles.subtituloPagina}> 
-        Envie sua mensagem e receba o retorno em até 5 dias úteis.
-      </Text>
+      {/* Caixa de informações */}
+      <View style={styles.caixaTextos}>
+        <Text style={styles.tituloPagina}>Entre em contato</Text>
+        <Text style={styles.subtituloPagina}>Envie sua mensagem e receba o retorno em até 5 dias úteis.</Text>
       </View>
 
+      {/* Campos de entrada */}
       <TextInput
         style={styles.email}
         placeholder={isFocusedNome ? '' : '  Nome'}
@@ -62,8 +63,7 @@ export default function Atendimento() {
         onFocus={() => setIsFocusedNome(true)}
         onBlur={() => setIsFocusedNome(false)}
       />
-
-<TextInput
+      <TextInput
         style={styles.email}
         placeholder={isFocusedEmail ? '' : '  Email'}
         value={email}
@@ -71,8 +71,7 @@ export default function Atendimento() {
         onFocus={() => setIsFocusedEmail(true)}
         onBlur={() => setIsFocusedEmail(false)}
       />
-
-<TextInput
+      <TextInput
         style={styles.mensagem}
         placeholder={isFocusedTexto ? '' : '  Digite sua mensagem'}
         value={texto}
@@ -80,21 +79,25 @@ export default function Atendimento() {
         onFocus={() => setIsFocusedTexto(true)}
         onBlur={() => setIsFocusedTexto(false)}
       />
-<TouchableOpacity style={styles.enviar} onPress={handleSend} disabled={loading}>
+
+      {/* Botão de enviar */}
+      <TouchableOpacity style={styles.enviar} onPress={handleSend} disabled={loading}>
         {loading ? (
-<ActivityIndicator color="#fff" />
+          <ActivityIndicator color="#fff" />
         ) : (
-<Text style={styles.textoEnviar}>Enviar</Text>
+          <Text style={styles.textoEnviar}>Enviar</Text>
         )}
-</TouchableOpacity>
- 
+      </TouchableOpacity>
+
+      {/* Exibe a mensagem de status */}
       {statusMessage !== '' && (
-<Text style={styles.statusMessage}>{statusMessage}</Text>
+        <Text style={styles.statusMessage}>{statusMessage}</Text>
       )}
-</View>
+    </View>
   );
 }
- 
+
+// Estilos dos componentes
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -109,15 +112,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 5,
   },
-
-  subtitulo:{
+  subtitulo: {
     fontSize: 10,
     textAlign: 'center',
     marginTop: 5,
     letterSpacing: 8,
-    marginBottom: 40
+    marginBottom: 40,
   },
-
   email: {
     backgroundColor: 'white',
     borderRadius: 20,
@@ -129,7 +130,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     paddingVertical: 10,
   },
-
   mensagem: {
     backgroundColor: 'white',
     borderRadius: 20,
@@ -141,9 +141,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     height: '30%',
     textAlignVertical: 'top',
-    marginBottom: 20
+    marginBottom: 20,
   },
-
   enviar: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -164,22 +163,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'green',
   },
-  caixaTextos:{
-    alignItems:'flex-start',
+  caixaTextos: {
+    alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    width: '80%'
+    width: '80%',
   },
-
-  tituloPagina:{
+  tituloPagina: {
     fontSize: 20,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 15,
   },
-
-  subtituloPagina:{
+  subtituloPagina: {
     fontSize: 15,
-    fontWeight:'light',
-    marginBottom: 35
+    fontWeight: 'light',
+    marginBottom: 35,
   },
 });
