@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker, Polyline, LatLng, Callout } from 'react-native-maps';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -7,7 +7,9 @@ import * as Location from 'expo-location';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { ref, set, get, update } from 'firebase/database';
+import { db, auth } from './config/firebaseConfig';
+import { useRoute } from '@react-navigation/native';
 
 export default function Linha813() {
   const navigation = useNavigation();
@@ -15,7 +17,6 @@ export default function Linha813() {
   // Async do tempo pro ônibus chegar
   const [minutesLeft, setMinutesLeft] = useState(37);
 
-  // Effect pra pegar os minutos que faltam e salvar dentro da função, para quando sair da tela e acessar o timer naão resete
   useEffect(() => {
     const loadTimer = async () => {
       try {
@@ -29,7 +30,6 @@ export default function Linha813() {
     };
     loadTimer();
 
-    // O timer. Pega o minutesLeft, vê quantos minutos falta, e tira um a cada 60 segundos. O async se encontra dentro de setminutesleft pra salvar o tempo que falta no async
     const timerInterval = setInterval(() => {
       setMinutesLeft(prev => {
         const newTime = prev > 0 ? prev - 1 : 37; 
@@ -38,11 +38,9 @@ export default function Linha813() {
       });
     }, 60000);
 
-  
     return () => clearInterval(timerInterval);
   }, []);
 
-// texto que exibe o tempo que falta para o ônibus chegar
   const displayText = minutesLeft < 1 ? "Chegando agora" : `${minutesLeft} min`;
 
   const [location, setLocation] = useState({
@@ -52,7 +50,6 @@ export default function Linha813() {
     longitudeDelta: 0.01,
   });
 
-// async que salva a localização do usuário (para a simulação do ônibus andando no mapa)
   const getUserLocation = async () => {
     try {
       const { coords } = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
@@ -66,7 +63,6 @@ export default function Linha813() {
     }
   };
 
-  // A cada 30 segundos, a localização será atualizada
   useEffect(() => {
     (async () => {
       await Location.requestForegroundPermissionsAsync();
@@ -80,12 +76,9 @@ export default function Linha813() {
     })();
   }, []);
 
-  // Async do botão FAV (Substituir depois pela função do banco de dados)
-
   const [isFavorite, setIsFavorite] = useState(false);
   const FAVORITE_KEY = 'isFavorite';
 
- 
   useEffect(() => {
     const loadFavoriteState = async () => {
       try {
@@ -101,12 +94,28 @@ export default function Linha813() {
     loadFavoriteState();
   }, []);
 
- 
   const trocarFav = async () => {
     try {
       const newState = !isFavorite;
       setIsFavorite(newState);
       await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(newState));
+
+      // Agora salva as rotas favoritas no Realtime Database
+      const userId = auth.currentUser?.uid;
+      if (userId) {
+        const userRef = ref(db, `users/${userId}/favoriteRoutes`);
+        const snapshot = await get(userRef);
+        let favoriteRoutes = snapshot.exists() ? snapshot.val() : {}; // Usando um objeto ao invés de array
+
+        // Adiciona ou remove a rota "Linha813" nos favoritos
+        if (newState) {
+          favoriteRoutes['Linha813'] = true; // Marca a rota como favorita
+        } else {
+          delete favoriteRoutes['Linha813']; // Remove a rota dos favoritos
+        }
+
+        await update(userRef, { favoriteRoutes }); // Atualiza as rotas favoritas no Firebase
+      }
     } catch (error) {
       console.error('Erro ao salvar estado favorito:', error);
     }

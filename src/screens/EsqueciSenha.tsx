@@ -45,40 +45,57 @@ export default function EsqueciSenha({ navigation }: Props) {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.voltar} onPress={() => navigation.navigate('login')}>
-        <Feather name="arrow-left" style={styles.icon} />
-      </TouchableOpacity>
+    // Contêiner principal da tela, geralmente usado para definir o layout e a estrutura.
+<View style={styles.container}>
 
-      <View>
-        <Text style={styles.titulo}>WIMB</Text>
-        <Text style={styles.subtitulo}>WHERE IS MY BUS</Text>
-      </View>
+{/* Botão de voltar, que leva o usuário de volta à tela de login */}
+<TouchableOpacity style={styles.voltar} onPress={() => navigation.navigate('login')}>
+  {/* Ícone de seta para voltar, usando o componente Feather para ícones */}
+  <Feather name="arrow-left" style={styles.icon} />
+</TouchableOpacity>
 
-      <View style={styles.caixaTextos}>
-        <Text style={styles.tituloPagina}>Esqueceu a senha?</Text>
-        <Text style={styles.subtituloPagina}>
-          Digite o e-mail vinculado à sua conta para redefinir a senha.
-        </Text>
-      </View>
+{/* Bloco de texto com o título e subtítulo */}
+<View>
+  {/* Título principal da tela */}
+  <Text style={styles.titulo}>WIMB</Text>
+  {/* Subtítulo que acompanha o título */}
+  <Text style={styles.subtitulo}>WHERE IS MY BUS</Text>
+</View>
 
-      <TextInput
-        style={styles.campo}
-        placeholder={isFocused ? '' : 'E-mail'}
-        value={email}
-        onChangeText={setEmail}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+{/* Bloco de informações sobre a tela de recuperação de senha */}
+<View style={styles.caixaTextos}>
+  {/* Título da página */}
+  <Text style={styles.tituloPagina}>Esqueceu a senha?</Text>
+  {/* Subtítulo com instruções para o usuário */}
+  <Text style={styles.subtituloPagina}>
+    Digite o e-mail vinculado à sua conta para redefinir a senha.
+  </Text>
+</View>
 
-      {error ? <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text> : null}
+{/* Campo de input onde o usuário pode inserir o e-mail */}
+<TextInput
+  style={styles.campo}
+  // O texto placeholder desaparece ao focar no campo, indicando que o campo está em uso
+  placeholder={isFocused ? '' : 'E-mail'}
+  value={email} // Valor do e-mail, controlado pelo estado `email`
+  onChangeText={setEmail} // Atualiza o estado do e-mail ao digitar no campo
+  onFocus={() => setIsFocused(true)} // Define que o campo está focado quando o usuário clica nele
+  onBlur={() => setIsFocused(false)} // Define que o campo perde o foco quando o usuário sai dele
+  keyboardType="email-address" // Especifica que o teclado deve ser adequado para e-mails
+  autoCapitalize="none" // Impede que o primeiro caractere seja automaticamente capitalizado
+/>
 
-      <TouchableOpacity style={styles.enviar} onPress={handleSendPasswordReset}>
-        <Text style={styles.textocadastrar}>Enviar</Text>
-      </TouchableOpacity>
-    </View>
+{/* Exibe uma mensagem de erro, caso exista, em vermelho abaixo do campo de e-mail */}
+{error ? <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text> : null}
+
+{/* Botão para enviar o pedido de redefinição de senha */}
+<TouchableOpacity style={styles.enviar} onPress={handleSendPasswordReset}>
+  {/* Texto dentro do botão */}
+  <Text style={styles.textocadastrar}>Enviar</Text>
+</TouchableOpacity>
+
+</View>
+
   );
 }
 

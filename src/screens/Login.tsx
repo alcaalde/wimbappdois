@@ -16,30 +16,44 @@ type RootStackParamList = {
 type Props = StackScreenProps<RootStackParamList, 'login'>;
 
 export default function Login({ navigation }: Props) {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [error, setError] = useState('');
+ // Declaração de estado para armazenar o valor do e-mail digitado pelo usuário.
+const [email, setEmail] = useState(''); 
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+// Declaração de estado para armazenar o valor da senha digitada pelo usuário.
+const [senha, setSenha] = useState('');
 
-  const handleSubmit = async () => {
-    if (email === '' || senha === '') {
-      setError('Preencha todos os campos.');
-      return;
-    }
+// Declaração de estado para armazenar mensagens de erro que serão exibidas caso o usuário cometa algum erro ao preencher o formulário.
+const [error, setError] = useState('');
 
-    if (!emailRegex.test(email)) {
-      setError('Por favor, insira um e-mail válido.');
-      return;
-    }
+// Expressão regular para validação de um e-mail válido. A regex verifica se o formato do e-mail é adequado.
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+// Função que será chamada quando o formulário for submetido (geralmente ao pressionar o botão de login ou cadastro).
+const handleSubmit = async () => {
+  // Verifica se os campos de e-mail ou senha estão vazios. Se estiverem, exibe uma mensagem de erro e retorna sem prosseguir.
+  if (email === '' || senha === '') {
+    setError('Preencha todos os campos.');
+    return; // Impede a execução de qualquer outra lógica caso o formulário não esteja completo
+  }
+
+  // Valida o e-mail utilizando a regex. Caso o formato do e-mail esteja incorreto, exibe uma mensagem de erro.
+  if (!emailRegex.test(email)) {
+    setError('Por favor, insira um e-mail válido.');
+    return; // Impede a execução de qualquer outra lógica caso o e-mail seja inválido
+  }
+
+
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, senha);
+       // Tenta autenticar o usuário com o e-mail e a senha fornecidos
+      const userCredential = await signInWithEmailAndPassword(auth, email, senha); 
       const userId = userCredential.user.uid;
 
+       // Cria uma referência ao banco de dados Firebase no caminho específico para o usuário
       const userRef = ref(db, `users/${userId}`);
       const snapshot = await get(userRef);
 
+        // Verifica se os dados do usuário existem no banco de dados
       if (snapshot.exists()) {
         const userData = snapshot.val();
         console.log('Dados do usuário:', userData);
@@ -49,7 +63,7 @@ export default function Login({ navigation }: Props) {
         setError('Usuário não encontrado no banco de dados.');
       }
     } catch (error: any) {
-      setError('Erro ao entrar: ' + error.message);
+      setError('E-mail ou senha incorretos! ');
     }
   };
 

@@ -8,7 +8,6 @@ import HorarioTela from "../screens/horario"
 import Linha813 from '../screens/onibus813';
 import SearchScreen from '../screens/telapesquisa';
 
-
 export type RootStackParamList = {
     login: undefined;
     cadastro: undefined;
@@ -18,51 +17,63 @@ export type RootStackParamList = {
     horario: undefined;
     onibus813: undefined;
     telapesquisa: undefined;
-    
   };
   
   const Stack = createStackNavigator<RootStackParamList>();
  
 export default function StackRoutes(){
     return (
-        
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen 
-                    name="login" 
-                    component={Login} 
-                />
-                <Stack.Screen 
-                    name="cadastro" 
-                    component={Cad} 
-                />
-                <Stack.Screen
-                    name="home" 
-                    component={DrawerRoutes} 
-                />
-                
-                <Stack.Screen
-                    name="senha" 
-                    component={EsqueciSenha} 
-                />
-                <Stack.Screen
-                    name="infoOnibus" 
-                    component={InfoOnibus} 
-                />
-                 <Stack.Screen
-                    name="horario" 
-                    component={HorarioTela} 
-                />
-                <Stack.Screen
-                    name="onibus813" 
-                    component={Linha813} 
-                />
+        // Definição das telas na navegação em pilha
+        <Stack.Navigator screenOptions={{ headerShown: false }}> 
+            
+            {/* Tela de login */}
+            <Stack.Screen 
+                name="login" 
+                component={Login} 
+            />
+            
+            {/* Tela de cadastro */}
+            <Stack.Screen 
+                name="cadastro" 
+                component={Cad} 
+            />
+            
+            {/* Tela inicial com DrawerRoutes */}
+            <Stack.Screen
+                name="home" 
+                component={DrawerRoutes} 
+            />
+            
+            {/* Tela de recuperação de senha */}
+            <Stack.Screen
+                name="senha" 
+                component={EsqueciSenha} 
+            />
+            
+            {/* Tela de informações sobre o ônibus */}
+            <Stack.Screen
+                name="infoOnibus" 
+                component={InfoOnibus} 
+            />
+            
+            {/* Tela de horários */}
+            <Stack.Screen
+                name="horario" 
+                component={HorarioTela} 
+            />
+            
+            {/* Tela da linha de ônibus 813 */}
+            <Stack.Screen
+                name="onibus813" 
+                component={Linha813} 
+            />
 
-               <Stack.Screen 
+            {/* Tela de pesquisa */}
+            <Stack.Screen 
                 name="telapesquisa" 
                 component={SearchScreen} 
-                 />
-
-                
-            </Stack.Navigator>
+            />
+            
+        </Stack.Navigator>
     )
 }
