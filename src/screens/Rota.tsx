@@ -56,15 +56,27 @@ export default function Mapa() {
 
           {/* marker dos pontos de ônibus */}
           <Marker
-            coordinate={{ latitude: -23.454855496866678, longitude: -46.50189870636914 }}
-            title="Ponto de ônibus 1"
-            description="Teste básico"
+            coordinate={{ latitude: -23.45341876981034, longitude: -46.50272301346377 }}
+            title="R. Guilherme Lino dos Santos, 632"
+            description="Ônibus: 233, 356A"
           >
             <Image
               source={require('../../assets/pontoteste.png')}
               style={{ width: 50, height: 50 }}
             />
           </Marker>
+
+          <Marker
+            coordinate={{ latitude: -23.45521781221215, longitude: -46.50225316194484 }}
+            title="R. Guilherme Lino dos Santos, 799-847"
+            description="Ônibus: 233"
+          >
+            <Image
+              source={require('../../assets/pontoteste.png')}
+              style={{ width: 50, height: 50 }}
+            />
+          </Marker>
+
         </MapView>
       )}
 

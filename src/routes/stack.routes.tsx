@@ -8,6 +8,7 @@ import HorarioTela from "../screens/horario"
 import Linha813 from '../screens/onibus813';
 import SearchScreen from '../screens/telapesquisa';
 
+
 export type RootStackParamList = {
     login: undefined;
     cadastro: undefined;
@@ -17,6 +18,7 @@ export type RootStackParamList = {
     horario: undefined;
     onibus813: undefined;
     telapesquisa: undefined;
+    
   };
   
   const Stack = createStackNavigator<RootStackParamList>();

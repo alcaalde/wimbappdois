@@ -74,7 +74,7 @@ export default function Linha813() {
 
       const intervalId = setInterval(() => {
         getUserLocation();
-      }, 30000);
+      }, 15000);
 
       return () => clearInterval(intervalId);
     })();
